@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode;//package com.qualcomm.ftcrobotcontroller.opmodes;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorController;
 import com.qualcomm.robotcore.util.Range;
 
 /**
@@ -51,7 +50,7 @@ public class Wheels {
     motorLeft.setDirection(DcMotor.Direction.FORWARD);
     motorRight.setDirection(DcMotor.Direction.REVERSE);
 
-    setMotorMode(DcMotor.RunMode.RUN_WITHOUT_ENCODERS);
+    setMotorMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
   }
 
   public void start() { setPower(0.0, 0.0); }

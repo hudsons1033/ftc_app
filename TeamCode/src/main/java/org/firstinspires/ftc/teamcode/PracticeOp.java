@@ -1,9 +1,10 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="TeleOp: Teleop Tank", group="Pushbot")
+@TeleOp(name = "Practice", group = "Pushbot")
 
 public class PracticeOp extends OpMode {
 
@@ -42,7 +43,7 @@ public class PracticeOp extends OpMode {
       wheels.move(-gamepad1.left_stick_y, -gamepad1.right_stick_y);
 
 
-      telemetry.addData("Text", "*** Robot Data***");
+      telemetry.addData("Text", "*** Robot Data*** x: " + gamepad1.left_stick_x + " y: " + gamepad1.left_stick_y);
     }
    @Override
       public void stop()  {
