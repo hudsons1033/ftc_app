@@ -31,7 +31,7 @@ public class PracWheels {
     motorRight = right;
 
     motorLeft.setDirection(DcMotor.Direction.FORWARD);
-    motorRight.setDirection(DcMotor.Direction.FORWARD);
+      motorRight.setDirection(DcMotor.Direction.REVERSE);
 
     setMotorMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
   }

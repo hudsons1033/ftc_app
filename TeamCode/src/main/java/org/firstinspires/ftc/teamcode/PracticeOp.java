@@ -43,7 +43,8 @@ public class PracticeOp extends OpMode {
       wheels.move(-gamepad1.left_stick_y, -gamepad1.right_stick_y);
 
 
-      telemetry.addData("Text", "*** Robot Data*** x: " + gamepad1.left_stick_x + " y: " + gamepad1.left_stick_y);
+        telemetry.addData("Text", "left y: " + gamepad1.left_stick_y);
+        telemetry.addData("Text", "right y: " + gamepad1.right_stick_y);
     }
    @Override
       public void stop()  {
