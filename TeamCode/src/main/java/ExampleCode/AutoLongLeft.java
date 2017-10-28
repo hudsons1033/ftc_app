@@ -183,7 +183,7 @@ public class AutoLongLeft extends OpMode {
         break;
     }
 
-    telemetry.addData("state", String.format("state: %s", state));
+    telemetry.addData("state", String.format("state: %s;", state));
     telemetry.addData("left",  String.format("%.2f", leftPosFt));
     telemetry.addData("right", String.format("%.2f", rightPosFt));
   }
