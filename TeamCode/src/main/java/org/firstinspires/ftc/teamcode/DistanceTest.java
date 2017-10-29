@@ -6,20 +6,18 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-@Autonomous(name = "AutoForward", group = "Pushbot")
+@Autonomous(name = "DistanceTest", group = "Pushbot")
 
-public class AutoForward extends OpMode {
+public class DistanceTest extends OpMode {
 
     private DcMotor leftSide;
     private DcMotor rightSide;
 
 
     private double Speed = 0.4;
-    private double secPerFt = 0.5 / Speed;
-    private double straightDist = 3;
-    private double straightDur = straightDist * secPerFt;
 
     private ElapsedTime timer = new ElapsedTime();
+    private ElapsedTime timer2 = new ElapsedTime();
 
     private void setLeftPower(double pwr) {
         double leftPower = Range.clip(pwr, -1, 1);
@@ -54,19 +52,30 @@ public class AutoForward extends OpMode {
     public void start() {
         setPower(0.0, 0.0);
         timer.reset();
+        timer2.reset();
         telemetry.addData("Start", "");
     }
 
-    @Override
-    public void loop() {
+    private void test() {
 
-        telemetry.addData("Time", timer.time());
+        telemetry.addData("before reset", "");
 
-        if (timer.time() <= straightDur) {
-            move();
-        } else {
-            stop();
+        timer.reset();
+        timer2.reset();
+
+        move();
+
+        telemetry.addData("after reset", "");
+
+        while (timer.time() < 1) {
+
+            telemetry.addData("Time", timer.time());
+            telemetry.addData("Time2", timer2.time());
+
         }
+
+        stop();
+
     }
 
     @Override
@@ -80,5 +89,12 @@ public class AutoForward extends OpMode {
         setWheelMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         telemetry.addData("Init", "");
+
+        test();
+    }
+
+    @Override
+    public void loop() {
+
     }
 }
