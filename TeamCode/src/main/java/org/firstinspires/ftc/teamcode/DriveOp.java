@@ -8,9 +8,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 public class DriveOp extends OpMode {
 
-    private DcMotor motorLeft;
-    private DcMotor motorRight;
-
     private Wheels wheels;
 
     public DriveOp() {
@@ -19,9 +16,10 @@ public class DriveOp extends OpMode {
 
     @Override
     public void init() {
-        motorLeft = hardwareMap.dcMotor.get("MotorLeft");
-        motorRight = hardwareMap.dcMotor.get("MotorRight");
-        wheels.init(motorLeft, motorRight);
+        DcMotor motorLeft = hardwareMap.dcMotor.get("MotorLeft");
+        DcMotor motorRight = hardwareMap.dcMotor.get("MotorRight");
+        DcMotor motorElevator = hardwareMap.dcMotor.get("ElevatorMotor");
+        wheels.init(motorLeft, motorRight, motorElevator);
     }
 
     @Override
@@ -32,11 +30,12 @@ public class DriveOp extends OpMode {
 
     public void loop() {
         // Gamepad sticks are inverted.
-        wheels.move(-gamepad1.left_stick_y, -gamepad1.right_stick_y);
+        wheels.move(-gamepad1.left_stick_y, -gamepad1.right_stick_y, -gamepad2.left_stick_y);
 
 
         telemetry.addData("Left Y", gamepad1.left_stick_y);
         telemetry.addData("Right Y", gamepad1.right_stick_y);
+        telemetry.addData("Elevator Y", gamepad2.left_stick_y);
     }
 
     @Override

@@ -30,38 +30,48 @@ public class Wheels {
 
   private DcMotor motorLeft;
   private DcMotor motorRight;
+  private DcMotor motorEle;
 
   private void setMotorMode(DcMotor.RunMode mode) {
     motorLeft.setMode(mode);
     motorRight.setMode(mode);
+    motorEle.setMode(mode);
   }
 
-  private void setPower(double left, double right) {
+  private void setPower(double left, double right, double ele) {
     motorLeft.setPower(left);
     motorRight.setPower(right);
+    motorEle.setPower(ele);
   }
 
   public Wheels() { }
 
-  public void init(DcMotor left, DcMotor right) {
+  public void init(DcMotor left, DcMotor right, DcMotor ele) {
     motorLeft  = left;
     motorRight = right;
+    motorEle = ele;
 
     motorLeft.setDirection(DcMotor.Direction.FORWARD);
     motorRight.setDirection(DcMotor.Direction.REVERSE);
+    motorEle.setDirection(DcMotor.Direction.FORWARD);
 
     setMotorMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
   }
 
-  public void start() { setPower(0.0, 0.0); }
-
-  // Movement inputs: -1 = full reverse, 1 = full forward.
-  public void move(double left, double right) {
-    double scaled_left  = ScaleInput(left);
-    double scaled_right = ScaleInput(right);
-    setPower(scaled_left, scaled_right);
+  public void start() {
+    setPower(0.0, 0.0, 0.0);
   }
 
-  public void stop() { setPower(0.0, 0.0); }
+  // Movement inputs: -1 = full reverse, 1 = full forward.
+  public void move(double left, double right, double ele) {
+    double scaled_left  = ScaleInput(left);
+    double scaled_right = ScaleInput(right);
+    double scaled_ele = ScaleInput(ele);
+    setPower(scaled_left, scaled_right, scaled_ele);
+  }
+
+  public void stop() {
+    setPower(0.0, 0.0, 0.0);
+  }
 
 } // Wheels
