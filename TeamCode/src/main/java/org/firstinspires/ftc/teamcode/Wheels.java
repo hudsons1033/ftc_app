@@ -48,7 +48,7 @@ public class Wheels {
     motorRight.setPower(right);
     motorEle.setPower(ele);
     servoLeft.setPosition(servLeft);
-//    servoRight.setPosition(servRight);
+    servoRight.setPosition(servRight);
   }
 
   public Wheels() { }
@@ -72,7 +72,7 @@ public class Wheels {
   }
 
   public void start() {
-    setPower(0.0, 0.0, 0.0, 0.0, 0.0);
+    setPower(0.0, 0.0, 0.0, 1, 1);
   }
 
   // Movement inputs: -1 = full reverse, 1 = full forward.
@@ -88,11 +88,11 @@ public class Wheels {
     }
 
     if (isOpen) {
-      servMoveLeft = 0.0;
-      servMoveRight = 0.0;
+      servMoveLeft = 1;
+      servMoveRight = 1;
     } else {
-      servMoveLeft = -0.2;
-      servMoveRight = -0.2;
+      servMoveLeft = 0;
+      servMoveRight = 0;
     }
 
     setPower(scaled_left, scaled_right, scaled_ele, servMoveLeft, servMoveRight);
