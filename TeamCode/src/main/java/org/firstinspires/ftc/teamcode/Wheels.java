@@ -10,96 +10,93 @@ import com.qualcomm.robotcore.util.Range;
  */
 public class Wheels {
 
-  boolean isOpen;
+    boolean isOpen;
 
-  private static double[] ScaleArray = {
-    0.00, 0.05, 0.09, 0.10, 0.12, 0.15, 0.18, 0.24,
-    0.30, 0.36, 0.43, 0.50, 0.60, 0.72, 0.85, 1.00
-  };
+    private static double[] ScaleArray = {
+            0.00, 0.05, 0.09, 0.10, 0.12, 0.15, 0.18, 0.24,
+            0.30, 0.36, 0.43, 0.50, 0.60, 0.72, 0.85, 1.00
+    };
 
-  private static double ScaleInput(double dVal)  {
-    dVal = Range.clip(dVal, -1, 1);
+    private static double ScaleInput(double dVal) {
+        dVal = Range.clip(dVal, -1, 1);
 
-    // get the corresponding index for the scaleInput array.
-    int index = (int) (Math.abs(dVal) * 16.0);
-    if (index > 15)
-      index = 15;
+        // get the corresponding index for the scaleInput array.
+        int index = (int) (Math.abs(dVal) * 16.0);
+        if (index > 15)
+            index = 15;
 
-
-    // get value from the array.
-    double dScale = ScaleArray[index];
-    return (dVal >= 0) ? dScale : -dScale;
-  }
-
-  private DcMotor motorLeft;
-  private DcMotor motorRight;
-  private DcMotor motorEle;
-  private Servo servoLeft;
-  private Servo servoRight;
-
-  private void setMotorMode(DcMotor.RunMode mode) {
-    motorLeft.setMode(mode);
-    motorRight.setMode(mode);
-    motorEle.setMode(mode);
-  }
-
-  private void setPower(double left, double right, double ele, double servLeft, double servRight) {
-    motorLeft.setPower(left);
-    motorRight.setPower(right);
-    motorEle.setPower(ele);
-    servoLeft.setPosition(servLeft);
-    servoRight.setPosition(servRight);
-  }
-
-  public Wheels() { }
-
-  public void init(DcMotor left, DcMotor right, DcMotor ele, Servo servLeft, Servo servRight) {
-    motorLeft  = left;
-    motorRight = right;
-    motorEle = ele;
-    servoLeft = servLeft;
-    servoRight = servRight;
-
-    motorLeft.setDirection(DcMotor.Direction.REVERSE);
-    motorRight.setDirection(DcMotor.Direction.FORWARD);
-    motorEle.setDirection(DcMotor.Direction.FORWARD);
-    servoLeft.setDirection(Servo.Direction.FORWARD);
-    servoRight.setDirection(Servo.Direction.REVERSE);
-
-    isOpen = true;
-
-    setMotorMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-  }
-
-  public void start() {
-    setPower(0.0, 0.0, 0.0, 1, 1);
-  }
-
-  // Movement inputs: -1 = full reverse, 1 = full forward.
-  public void move(double left, double right, double ele, boolean bttnPush) {
-    double servMoveLeft;
-    double servMoveRight;
-    double scaled_left  = ScaleInput(left);
-    double scaled_right = ScaleInput(right);
-    double scaled_ele = ScaleInput(ele);
-
-    if (bttnPush) {
-      isOpen = !isOpen;
+        // get value from the array.
+        double dScale = ScaleArray[index];
+        return (dVal >= 0) ? dScale : -dScale;
     }
 
-    if (isOpen) {
-      servMoveLeft = 1;
-      servMoveRight = 1;
-    } else {
-      servMoveLeft = 0;
-      servMoveRight = 0;
+    private DcMotor motorLeft;
+    private DcMotor motorRight;
+    private DcMotor motorEle;
+    private Servo servoLeft;
+    private Servo servoRight;
+
+    private void setMotorMode(DcMotor.RunMode mode) {
+        motorLeft.setMode(mode);
+        motorRight.setMode(mode);
+        motorEle.setMode(mode);
     }
 
-    setPower(scaled_left, scaled_right, scaled_ele, servMoveLeft, servMoveRight);
-  }
+    private void setPower(double left, double right, double ele, double servLeft, double servRight) {
+        motorLeft.setPower(left);
+        motorRight.setPower(right);
+        motorEle.setPower(ele);
+        servoLeft.setPosition(servLeft);
+        servoRight.setPosition(servRight);
+    }
 
-  public void stop() {
-    setPower(0.0, 0.0, 0.0, 0.0, 0.0);
-  }
+    public Wheels() {
+    }
+
+    public void init(DcMotor left, DcMotor right, DcMotor ele, Servo servLeft, Servo servRight) {
+        motorLeft = left;
+        motorRight = right;
+        motorEle = ele;
+        servoLeft = servLeft;
+        servoRight = servRight;
+
+        motorLeft.setDirection(DcMotor.Direction.REVERSE);
+        motorRight.setDirection(DcMotor.Direction.FORWARD);
+        motorEle.setDirection(DcMotor.Direction.FORWARD);
+        servoLeft.setDirection(Servo.Direction.FORWARD);
+        servoRight.setDirection(Servo.Direction.REVERSE);
+
+        isOpen = true;
+
+        setMotorMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+    }
+
+    public void start() {
+        setPower(0.0, 0.0, 0.0, 1, 1);
+    }
+
+    // Movement inputs: -1 = full reverse, 1 = full forward.
+    public void move(double left, double right, double ele, double servoPos) {
+        double servMoveLeft;
+        double servMoveRight;
+        double scaled_left = ScaleInput(left);
+        double scaled_right = ScaleInput(right);
+        double scaled_ele = ScaleInput(ele);
+
+        if (servoPos < 0) {
+            servoPos = -servoPos;
+            servMoveLeft = servoPos;
+            servMoveRight = servoPos;
+        } else {
+            servMoveLeft = servoPos;
+            servMoveRight = servoPos;
+        }
+
+        setPower(scaled_left, scaled_right, scaled_ele, servMoveLeft, servMoveRight);
+    }
+
+    public void stop() {
+        setPower(0.0, 0.0, 0.0, 0.0, 0.0);
+    }
 
 } // Wheels

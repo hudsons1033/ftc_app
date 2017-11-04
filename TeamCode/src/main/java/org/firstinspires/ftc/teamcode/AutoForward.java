@@ -13,11 +13,10 @@ public class AutoForward extends OpMode {
     private DcMotor leftSide;
     private DcMotor rightSide;
 
-
-    private double Speed = -0.4;
-    //    private double secPerFt = 0.5 / Speed;
-//    private double straightDist = 3;
-    private double straightDur = 1.5; //straightDist * secPerFt;
+    private double Speed = -0.4;  //Speed of motor
+    private double secPerFt = -0.2 / Speed;  //Seconds / Speed of motor
+    private double straightDist = 3;  //Distance in feet
+    private double straightDur = straightDist * secPerFt;  //Feet * Seconds per foot
 
     private ElapsedTime timer = new ElapsedTime();
 
