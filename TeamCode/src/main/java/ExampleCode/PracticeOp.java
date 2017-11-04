@@ -1,10 +1,9 @@
-package org.firstinspires.ftc.teamcode;
+package ExampleCode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@TeleOp(name = "Practice", group = "Pushbot")
+//@TeleOp(name = "Practice", group = "Pushbot")
 
 public class PracticeOp extends OpMode {
 
