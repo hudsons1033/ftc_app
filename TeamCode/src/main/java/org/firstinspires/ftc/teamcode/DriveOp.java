@@ -9,11 +9,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 public class DriveOp extends OpMode {
 
-    private float leftStick1 = gamepad1.left_stick_y;
-    private float rightStick1 = gamepad1.right_stick_y;
-    private float leftStick2 = gamepad2.left_stick_y;
-    private float rightStick2 = gamepad2.right_stick_y;
-
     private Wheels wheels;
 
     public DriveOp() {
@@ -39,17 +34,22 @@ public class DriveOp extends OpMode {
     public void loop() {
         // Gamepad sticks are inverted.
 
-        leftStick1 = gamepad1.left_stick_y;
-        rightStick1 = gamepad1.right_stick_y;
-        leftStick2 = gamepad2.left_stick_y;
-        rightStick2 = Math.abs(gamepad2.right_stick_y);
+        float leftStick1 = gamepad1.left_stick_y;
+        float rightStick1 = gamepad1.right_stick_y;
+        float leftStick2 = gamepad2.left_stick_y;
+        float rightStick2 = Math.abs(gamepad2.right_stick_y);
 
         wheels.move(-leftStick1, -rightStick1, -leftStick2, rightStick2);
+//        wheels.move(-gamepad1.left_stick_y, -gamepad1.right_stick_y, -gamepad2.left_stick_y, Math.abs(gamepad2.right_stick_y));
 
         telemetry.addData("Left Y", leftStick1);
         telemetry.addData("Right Y", rightStick1);
         telemetry.addData("Elevator Y", leftStick2);
         telemetry.addData("Servo Y", rightStick2);
+//        telemetry.addData("Left Y", gamepad1.left_stick_y);
+//        telemetry.addData("Right Y", gamepad1.right_stick_y);
+//        telemetry.addData("Elevator Y", gamepad2.left_stick_y);
+//        telemetry.addData("Servo Y", Math.abs(gamepad2.right_stick_y));
     }
 
     @Override

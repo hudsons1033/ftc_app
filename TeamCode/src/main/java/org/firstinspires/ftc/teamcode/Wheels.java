@@ -61,8 +61,8 @@ public class Wheels {
         motorLeft.setDirection(DcMotor.Direction.REVERSE);
         motorRight.setDirection(DcMotor.Direction.FORWARD);
         motorEle.setDirection(DcMotor.Direction.FORWARD);
-        servoLeft.setDirection(Servo.Direction.FORWARD);
-        servoRight.setDirection(Servo.Direction.REVERSE);
+        servoLeft.setDirection(Servo.Direction.REVERSE);
+        servoRight.setDirection(Servo.Direction.FORWARD);
 
         setMotorMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
