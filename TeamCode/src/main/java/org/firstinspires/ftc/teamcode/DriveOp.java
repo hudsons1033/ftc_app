@@ -39,7 +39,12 @@ public class DriveOp extends OpMode {
     public void loop() {
         // Gamepad sticks are inverted.
 
-        wheels.move(-leftStick1, -rightStick1, -leftStick2, -rightStick2);
+        leftStick1 = gamepad1.left_stick_y;
+        rightStick1 = gamepad1.right_stick_y;
+        leftStick2 = gamepad2.left_stick_y;
+        rightStick2 = Math.abs(gamepad2.right_stick_y);
+
+        wheels.move(-leftStick1, -rightStick1, -leftStick2, rightStick2);
 
         telemetry.addData("Left Y", leftStick1);
         telemetry.addData("Right Y", rightStick1);

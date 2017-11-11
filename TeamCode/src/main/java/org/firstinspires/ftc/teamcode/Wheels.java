@@ -10,8 +10,6 @@ import com.qualcomm.robotcore.util.Range;
  */
 public class Wheels {
 
-    boolean isOpen;
-
     private static double[] ScaleArray = {
             0.00, 0.05, 0.09, 0.10, 0.12, 0.15, 0.18, 0.24,
             0.30, 0.36, 0.43, 0.50, 0.60, 0.72, 0.85, 1.00
@@ -42,12 +40,12 @@ public class Wheels {
         motorEle.setMode(mode);
     }
 
-    private void setPower(double left, double right, double ele, double servLeft, double servRight) {
+    private void setPower(double left, double right, double ele, double servoPos) {
         motorLeft.setPower(left);
         motorRight.setPower(right);
         motorEle.setPower(ele);
-        servoLeft.setPosition(servLeft);
-        servoRight.setPosition(servRight);
+        servoLeft.setPosition(servoPos);
+        servoRight.setPosition(servoPos);
     }
 
     public Wheels() {
@@ -66,13 +64,11 @@ public class Wheels {
         servoLeft.setDirection(Servo.Direction.FORWARD);
         servoRight.setDirection(Servo.Direction.REVERSE);
 
-        isOpen = true;
-
         setMotorMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     public void start() {
-        setPower(0.0, 0.0, 0.0, 1, 1);
+        setPower(0.0, 0.0, 0.0, 0.0);
     }
 
     // Movement inputs: -1 = full reverse, 1 = full forward.
@@ -83,20 +79,11 @@ public class Wheels {
         double scaled_right = ScaleInput(right);
         double scaled_ele = ScaleInput(ele);
 
-        if (servoPos < 0) {
-            servoPos = -servoPos;
-            servMoveLeft = servoPos;
-            servMoveRight = servoPos;
-        } else {
-            servMoveLeft = servoPos;
-            servMoveRight = servoPos;
-        }
-
-        setPower(scaled_left, scaled_right, scaled_ele, servMoveLeft, servMoveRight);
+        setPower(scaled_left, scaled_right, scaled_ele, servoPos);
     }
 
     public void stop() {
-        setPower(0.0, 0.0, 0.0, 0.0, 0.0);
+        setPower(0.0, 0.0, 0.0, 0.0);
     }
 
 } // Wheels
