@@ -58,6 +58,7 @@ public class DriveOp extends OpMode {
         telemetry.addData("Right Y", rightStick1);
         telemetry.addData("Elevator Y", leftStick2);
         telemetry.addData("Servo Y", rightStick2);
+        telemetry.addData("Elevator Position", elePos);
     }
 
     @Override
