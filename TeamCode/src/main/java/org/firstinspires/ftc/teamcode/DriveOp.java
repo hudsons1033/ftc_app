@@ -11,6 +11,8 @@ public class DriveOp extends OpMode {
 
     private Wheels wheels;
 
+    private double elePos = 0;
+
     public DriveOp() {
         wheels = new Wheels();
     }
@@ -39,17 +41,23 @@ public class DriveOp extends OpMode {
         float leftStick2 = gamepad2.left_stick_y;
         float rightStick2 = Math.abs(gamepad2.right_stick_y);
 
-        wheels.move(-leftStick1, -rightStick1, -leftStick2, rightStick2);
-//        wheels.move(-gamepad1.left_stick_y, -gamepad1.right_stick_y, -gamepad2.left_stick_y, Math.abs(gamepad2.right_stick_y));
+        if (elePos <= 20 && elePos >= 0) {
+            elePos += leftStick2;
+            wheels.move(-leftStick1, -rightStick1, -leftStick2, rightStick2);
+        } else if (elePos < 0) {
+            elePos = 0;
+            wheels.move(-leftStick1, -rightStick1, 0.0, rightStick2);
+        } else if (elePos > 20) {
+            elePos = 20;
+            wheels.move(-leftStick1, -rightStick1, 0.0, rightStick2);
+        } else {
+            wheels.move(-leftStick1, -rightStick1, 0.0, rightStick2);
+        }
 
         telemetry.addData("Left Y", leftStick1);
         telemetry.addData("Right Y", rightStick1);
         telemetry.addData("Elevator Y", leftStick2);
         telemetry.addData("Servo Y", rightStick2);
-//        telemetry.addData("Left Y", gamepad1.left_stick_y);
-//        telemetry.addData("Right Y", gamepad1.right_stick_y);
-//        telemetry.addData("Elevator Y", gamepad2.left_stick_y);
-//        telemetry.addData("Servo Y", Math.abs(gamepad2.right_stick_y));
     }
 
     @Override
