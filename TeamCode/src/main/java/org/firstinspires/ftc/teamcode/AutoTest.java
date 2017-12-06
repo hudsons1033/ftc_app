@@ -82,15 +82,15 @@ public class AutoTest extends OpMode {
         } else {
             elevatorMotor.setPower(0);
             double straightDur = 1.5;
-            if (timer.time() <= straightDur) {
+            while (timer.time() <= straightDur) {
                 move();
             }
             double turnDur = 2;
-            if (timer.time() > straightDur && timer.time() <= turnDur) {
+            while (timer.time() > straightDur && timer.time() <= turnDur) {
                 turn();
             }
             double pushDur = 3;
-            if (timer.time() > turnDur && timer.time() <= pushDur) {
+            while (timer.time() > turnDur && timer.time() <= pushDur) {
                 moveForward();
             }
             double backupTime = 3.2;

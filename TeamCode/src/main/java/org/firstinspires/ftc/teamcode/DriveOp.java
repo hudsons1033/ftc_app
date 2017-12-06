@@ -41,22 +41,12 @@ public class DriveOp extends OpMode {
         float leftStick2 = gamepad2.left_stick_y;
         float rightStick2 = Math.abs(gamepad2.right_stick_y);
 
-        if (elePos <= 100 && elePos >= 0) {
-            elePos += -leftStick2;
-            wheels.move(-leftStick1, -rightStick1, -leftStick2, rightStick2);
-        } else if (elePos < 0) {
-            elePos = 0.2;
-            wheels.move(-leftStick1, -rightStick1, 0.0, rightStick2);
-        } else if (elePos > 1000) {
-            elePos = 1000;
-            wheels.move(-leftStick1, -rightStick1, 0.0, rightStick2);
-        }
+        wheels.move(-leftStick1, -rightStick1, -leftStick2, rightStick2);
 
         telemetry.addData("Left Y", leftStick1);
         telemetry.addData("Right Y", rightStick1);
         telemetry.addData("Elevator Y", leftStick2);
         telemetry.addData("Servo Y", rightStick2);
-        telemetry.addData("Elevator Position", elePos);
     }
 
     @Override
