@@ -61,8 +61,8 @@ public class Wheels {
         motorLeft.setDirection(DcMotor.Direction.REVERSE);
         motorRight.setDirection(DcMotor.Direction.FORWARD);
         motorEle.setDirection(DcMotor.Direction.FORWARD);
-      servoLeft.setDirection(Servo.Direction.FORWARD);
-      servoRight.setDirection(Servo.Direction.REVERSE);
+        servoLeft.setDirection(Servo.Direction.REVERSE);
+        servoRight.setDirection(Servo.Direction.FORWARD);
 
         setMotorMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
@@ -78,9 +78,9 @@ public class Wheels {
         double scaled_left = ScaleInput(left);
         double scaled_right = ScaleInput(right);
         double scaled_ele = ScaleInput(ele);
-      double servPos = Range.clip(servoPos, 0.5, 1);
+        double servPos = Range.clip(servoPos, 0.5, 0.85);
 
-        setPower(scaled_left, scaled_right, scaled_ele, servoPos);
+        setPower(scaled_left, scaled_right, scaled_ele, servPos);
     }
 
     public void stop() {

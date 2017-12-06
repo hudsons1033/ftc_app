@@ -11,7 +11,7 @@ public class DriveOp extends OpMode {
 
     private Wheels wheels;
 
-    private double elePos = 0;
+    private double elePos = 2;
 
     public DriveOp() {
         wheels = new Wheels();
@@ -41,16 +41,14 @@ public class DriveOp extends OpMode {
         float leftStick2 = gamepad2.left_stick_y;
         float rightStick2 = Math.abs(gamepad2.right_stick_y);
 
-        if (elePos <= 20 && elePos >= 0) {
-            elePos += leftStick2;
+        if (elePos <= 100 && elePos >= 0) {
+            elePos += -leftStick2;
             wheels.move(-leftStick1, -rightStick1, -leftStick2, rightStick2);
         } else if (elePos < 0) {
-            elePos = 0;
+            elePos = 0.2;
             wheels.move(-leftStick1, -rightStick1, 0.0, rightStick2);
-        } else if (elePos > 20) {
-            elePos = 20;
-            wheels.move(-leftStick1, -rightStick1, 0.0, rightStick2);
-        } else {
+        } else if (elePos > 1000) {
+            elePos = 1000;
             wheels.move(-leftStick1, -rightStick1, 0.0, rightStick2);
         }
 
