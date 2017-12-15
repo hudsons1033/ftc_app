@@ -80,20 +80,26 @@ public class AutoTest extends OpMode {
             servoRight.setPosition(0.5);
             elevatorMotor.setPower(1);
         } else {
-            elevatorMotor.setPower(0);
-            double straightDur = 1.5;
-            while (timer.time() <= straightDur) {
+            double grabTime = 0.5;
+            while (timer.time() <= grabTime) {
+                servoLeft.setPosition(0.5);
+                servoRight.setPosition(0.5);
+                elevatorMotor.setPower(1);
+            }
+            double straightDur = 2;
+            while (timer.time() <= straightDur && timer.time() > grabTime) {
+                elevatorMotor.setPower(0);
                 move();
             }
-            double turnDur = 2;
+            double turnDur = 2.5;
             while (timer.time() > straightDur && timer.time() <= turnDur) {
                 turn();
             }
-            double pushDur = 3;
+            double pushDur = 3.5;
             while (timer.time() > turnDur && timer.time() <= pushDur) {
                 moveForward();
             }
-            double backupTime = 3.2;
+            double backupTime = 3.7;
             if (timer.time() > pushDur && timer.time() <= backupTime) {
                 setWheels(0, 0);
                 elevatorMotor.setPower(-1);
