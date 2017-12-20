@@ -58,8 +58,8 @@ public class AutoTest extends OpMode {
     public void stop() {
         setWheels(0, 0);
         elevatorMotor.setPower(0);
-        servoLeft.setPosition(1);
-        servoRight.setPosition(1);
+        servoLeft.setPosition(0.4);
+        servoRight.setPosition(0.4);
     }
 
     @Override
@@ -82,11 +82,11 @@ public class AutoTest extends OpMode {
         } else {
             double grabTime = 0.5;
             while (timer.time() <= grabTime) {
-                servoLeft.setPosition(0.5);
-                servoRight.setPosition(0.5);
+                servoLeft.setPosition(0.85);
+                servoRight.setPosition(0.85);
                 elevatorMotor.setPower(1);
             }
-            double straightDur = 2;
+            double straightDur = 1.9;
             while (timer.time() <= straightDur && timer.time() > grabTime) {
                 elevatorMotor.setPower(0);
                 move();
@@ -99,19 +99,16 @@ public class AutoTest extends OpMode {
             while (timer.time() > turnDur && timer.time() <= pushDur) {
                 moveForward();
             }
-            double backupTime = 3.7;
-            if (timer.time() > pushDur && timer.time() <= backupTime) {
-                setWheels(0, 0);
-                elevatorMotor.setPower(-1);
-                servoLeft.setPosition(1);
-                servoRight.setPosition(1);
-            } else {
-                elevatorMotor.setPower(0);
-            }
-            double endTime = 3.4;
-            if (timer.time() > backupTime && timer.time() <= endTime) {
+            double backupTime = 3.9;
+            while (timer.time() > pushDur && timer.time() <= backupTime) {
                 setWheels(-1, -1);
-            } else {
+                elevatorMotor.setPower(-1);
+                servoLeft.setPosition(0.4);
+                servoRight.setPosition(0.4);
+            }
+            elevatorMotor.setPower(0);
+            double endTime = 4.5;
+            if (timer.time() > backupTime) {
                 stop();
             }
         }
@@ -128,11 +125,13 @@ public class AutoTest extends OpMode {
         leftSide.setDirection(DcMotor.Direction.REVERSE);
         rightSide.setDirection(DcMotor.Direction.FORWARD);
         elevatorMotor.setDirection(DcMotor.Direction.FORWARD);
-        servoLeft.setDirection(Servo.Direction.FORWARD);
-        servoRight.setDirection(Servo.Direction.REVERSE);
+        servoLeft.setDirection(Servo.Direction.REVERSE);
+        servoRight.setDirection(Servo.Direction.FORWARD);
 
         setWheelMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         telemetry.addData("Init", "");
+        servoLeft.setPosition(0.4);
+        servoRight.setPosition(0.4);
     }
 }
