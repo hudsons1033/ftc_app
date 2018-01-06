@@ -101,7 +101,6 @@ public class AutoTestBlu extends OpMode {
             servoRight.setPosition(0.4);
         }
         elevatorMotor.setPower(0);
-        double endTime = 4.5;
         if (timer.time() > backupTime) {
             stop();
         }
