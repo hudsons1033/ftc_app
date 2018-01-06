@@ -7,9 +7,9 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-@Autonomous(name = "AutoTest", group = "Pushbot")
+@Autonomous(name = "AutoTestBlu", group = "Pushbot")
 
-public class AutoTest extends OpMode {
+public class AutoTestBlu extends OpMode {
 
     private DcMotor leftSide;
     private DcMotor rightSide;
@@ -42,7 +42,7 @@ public class AutoTest extends OpMode {
     }
 
     private void turn() {
-        setWheels(Speed, -Speed);
+        setWheels(-Speed, Speed);
     }
 
     private void moveForward() {
