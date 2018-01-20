@@ -80,20 +80,20 @@ public class AutoTestBlu extends OpMode {
             servoRight.setPosition(0.85);
             elevatorMotor.setPower(1);
         }
-        double straightDur = 1.9;
+        double straightDur = 1.8;
         while (timer.time() <= straightDur && timer.time() > grabTime) {
             elevatorMotor.setPower(0);
             move();
         }
-        double turnDur = 2.5;
+        double turnDur = 2.3;
         while (timer.time() > straightDur && timer.time() <= turnDur) {
             turn();
         }
-        double pushDur = 3.5;
+        double pushDur = 3.3;
         while (timer.time() > turnDur && timer.time() <= pushDur) {
             moveForward();
         }
-        double backupTime = 3.9;
+        double backupTime = 3.7;
         while (timer.time() > pushDur && timer.time() <= backupTime) {
             setWheels(-1, -1);
             elevatorMotor.setPower(-1);
