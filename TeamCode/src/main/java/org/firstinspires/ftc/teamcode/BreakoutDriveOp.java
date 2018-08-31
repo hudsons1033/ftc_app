@@ -13,8 +13,8 @@ public class BreakoutDriveOp extends OpMode {
 
     @Override
     public void init() {
-        DcMotor motorA = hardwareMap.dcMotor.get("motorA");
-        DcMotor motorB = hardwareMap.dcMotor.get("motorB");
+        motorA = hardwareMap.dcMotor.get("motorA");
+        motorB = hardwareMap.dcMotor.get("motorB");
     }
 
     @Override
