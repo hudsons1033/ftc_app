@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;//package com.qualcomm.ftcrobotcontroller.opmodes;
+package ExampleCode;//package com.qualcomm.ftcrobotcontroller.opmodes;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
