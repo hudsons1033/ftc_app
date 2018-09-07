@@ -2,11 +2,10 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.Servo;
 
-/*
-This class is used to simplify the usage of Servos in the code.
-Please use this class instead of the Servo class.
- */
-
+/**
+ * This class is used to simplify the usage of Servos in the code.
+ * Please use this class instead of the Servo class.
+ **/
 public class BreakoutServo {
 
     //Define servo as a Servo object

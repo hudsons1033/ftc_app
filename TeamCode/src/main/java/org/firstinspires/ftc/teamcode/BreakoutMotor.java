@@ -2,11 +2,10 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-/*
-This class is used to simplify the usage of DC Motors in the code.
-Please use this class instead of DcMotor.
+/**
+ * This class is used to simplify the usage of DC Motors in the code.
+ * Please use this class instead of DcMotor.
  */
-
 class BreakoutMotor {
 
     //Define motor as a DcMotor

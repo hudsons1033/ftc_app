@@ -6,13 +6,13 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-/*
-This class is used for the Autonomous segment of the game. No controllers are to be used.
- */
-
+/**
+ * This class is used for the Autonomous segment of the game. No controllers are to be used.
+ **/
 @Autonomous(name = "BreakoutAutonomous", group = "pushbot")
 
 public class BreakoutAutoOp extends OpMode {
+    //TODO: Copy all classes to BreakoutBase package
 
     //Direction Constants
     private DcMotor.Direction MOTOR_FORWARD = DcMotor.Direction.FORWARD;
@@ -21,16 +21,17 @@ public class BreakoutAutoOp extends OpMode {
     private Servo.Direction SERVO_REVERSE = Servo.Direction.REVERSE;
 
     //Servo Breakout code definition
-    private BreakoutServo servoA;
-    private BreakoutServo servoB;
+    private BreakoutServo servoA = new BreakoutServo();
+    private BreakoutServo servoB = new BreakoutServo();
 
     //Motor Breakout code definition
-    private BreakoutMotor motorA;
-    private BreakoutMotor motorB;
+    private BreakoutMotor motorA = new BreakoutMotor();
+    private BreakoutMotor motorB = new BreakoutMotor();
 
     //Gyro Breakout code definition
-    private BreakoutGyro gyroA;
+    private BreakoutGyro gyroA = new BreakoutGyro();
 
+    //Timer definition
     private ElapsedTime timer = new ElapsedTime();
 
     public void init() {
@@ -91,6 +92,7 @@ public class BreakoutAutoOp extends OpMode {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        //TODO: Write out telemetry
 
     }
 

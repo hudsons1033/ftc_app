@@ -12,15 +12,14 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
-This class is used to simplify the usage of Gyroscopes in the code.
-Please use this class instead of the IntegratingGyroscope or GyroSensor classes.
- */
-
+/**
+ * This class is used to simplify the usage of Gyroscopes in the code.
+ * Please use this class instead of the IntegratingGyroscope or GyroSensor classes.
+ **/
 public class BreakoutGyro {
 
     //Define objects
-    IntegratingGyroscope gyro;
+    private IntegratingGyroscope gyro;
     GyroSensor gyroSensor;
 
     //Create arrays for raw xyz, angle orientation xyz, and angular velocity xyz data

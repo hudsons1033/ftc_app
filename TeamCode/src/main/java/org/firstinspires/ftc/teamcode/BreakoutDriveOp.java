@@ -6,10 +6,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-/*
-This class is used for the main game to drive the robot using the controllers.
- */
-
+/**
+ * This class is used for the main game to drive the robot using the controllers.
+ **/
 @TeleOp(name = "Drive", group = "Pushbot")
 
 public class BreakoutDriveOp extends OpMode {
@@ -21,16 +20,17 @@ public class BreakoutDriveOp extends OpMode {
     private Servo.Direction SERVO_REVERSE = Servo.Direction.REVERSE;
 
     //Servo Breakout code definition
-    private BreakoutServo servoA;
-    private BreakoutServo servoB;
+    private BreakoutServo servoA = new BreakoutServo();
+    private BreakoutServo servoB = new BreakoutServo();
 
     //Motor Breakout code definition
-    private BreakoutMotor motorA;
-    private BreakoutMotor motorB;
+    private BreakoutMotor motorA = new BreakoutMotor();
+    private BreakoutMotor motorB = new BreakoutMotor();
 
     //Gyro Breakout code definition
-    private BreakoutGyro gyroA;
+    private BreakoutGyro gyroA = new BreakoutGyro();
 
+    //Timer definition
     private ElapsedTime timer = new ElapsedTime();
 
     @Override
@@ -115,6 +115,7 @@ public class BreakoutDriveOp extends OpMode {
         telemetry.addData("Right Stick X 2", rightStick2x);
         telemetry.addData("Right Stick Y 2", rightStick2y);
         telemetry.addData("Gyro Heading", gyroA.getHeading());
+        //TODO: Add gyro stuff to telemetry
 
     }
 
