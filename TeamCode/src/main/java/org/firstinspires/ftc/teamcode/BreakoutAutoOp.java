@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class BreakoutAutoOp extends OpMode {
 
@@ -13,40 +14,58 @@ public class BreakoutAutoOp extends OpMode {
     private Servo.Direction SERVO_REVERSE = Servo.Direction.REVERSE;
 
     //Servo Breakout code definition
-    private ServoBreakout servoA;
-    private ServoBreakout servoB;
+    private BreakoutServo servoA;
+    private BreakoutServo servoB;
 
     //Motor Breakout code definition
-    private MotorBreakout motorA;
-    private MotorBreakout motorB;
+    private BreakoutMotor motorA;
+    private BreakoutMotor motorB;
+
+    //Gyro Breakout code definition
+    private BreakoutGyro gyroA;
+
+    private ElapsedTime timer = new ElapsedTime();
 
     public void init() {
 
         //Broken out servo class
-        Servo servo = hardwareMap.servo.get("servo");
-        Servo servo2 = hardwareMap.servo.get("servo2");
-        servoA = new ServoBreakout(servo2);
-        servoB = new ServoBreakout(servo);
+        servoA.set(hardwareMap.servo.get("servoA"));
+        servoB.set(hardwareMap.servo.get("servoB"));
         servoA.setDirection(SERVO_REVERSE);
         servoB.setDirection(SERVO_FORWARD);
         servoA.setPosition(0);
         servoB.setPosition(0);
 
         //Broken out motor class
-        DcMotor motor = hardwareMap.dcMotor.get("motor");
-        DcMotor motor2 = hardwareMap.dcMotor.get("motor2");
-        motorA = new MotorBreakout(motor2);
-        motorB = new MotorBreakout(motor);
-        motorA.setDirection(MOTOR_REVERSE);
-        motorB.setDirection(MOTOR_FORWARD);
+        motorA.set(hardwareMap.dcMotor.get("motorA"));
+        motorB.set(hardwareMap.dcMotor.get("motorB"));
+        motorA.setDirection(MOTOR_FORWARD);
+        motorB.setDirection(MOTOR_REVERSE);
         motorA.setPower(0);
         motorB.setPower(0);
+
+        //Broken out Gyro class
+        gyroA.set(hardwareMap.gyroSensor.get("gyroA"));
+        telemetry.addLine("Calibrating: DO NOT MOVE!");
+        gyroA.calibrate();
+        timer.reset();
+        while (gyroA.gyroSensor.isCalibrating()) {
+            telemetry.addData("Calibrating: ", Math.round(timer.seconds()) + " seconds");
+            telemetry.update();
+            try {
+                wait(50);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        }
 
     }
 
     @Override
     public void loop() {
 
+        //Run autonomous code
         servoA.setPosition(1);
         servoB.setPosition(1);
         motorA.setPower(1);
@@ -67,4 +86,5 @@ public class BreakoutAutoOp extends OpMode {
         }
 
     }
+
 }
