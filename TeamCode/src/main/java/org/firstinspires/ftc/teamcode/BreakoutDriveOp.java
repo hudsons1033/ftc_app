@@ -6,6 +6,10 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+/*
+This class is used for the main game to drive the robot using the controllers.
+ */
+
 @TeleOp(name = "Drive", group = "Pushbot")
 
 public class BreakoutDriveOp extends OpMode {
