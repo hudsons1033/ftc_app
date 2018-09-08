@@ -12,7 +12,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 @Autonomous(name = "BreakoutAutonomous", group = "pushbot")
 
 public class BreakoutAutoOp extends OpMode {
-    //TODO: Copy all classes to BreakoutBase package
 
     //Direction Constants
     private DcMotor.Direction MOTOR_FORWARD = DcMotor.Direction.FORWARD;
