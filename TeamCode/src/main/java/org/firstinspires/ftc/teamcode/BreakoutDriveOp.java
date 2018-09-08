@@ -115,7 +115,9 @@ public class BreakoutDriveOp extends OpMode {
         telemetry.addData("Right Stick X 2", rightStick2x);
         telemetry.addData("Right Stick Y 2", rightStick2y);
         telemetry.addData("Gyro Heading", gyroA.getHeading());
-        //TODO: Add gyro stuff to telemetry
+        telemetry.addData("Gyro Orientation (XYZ)", gyroA.getOrientationXYZ());
+        telemetry.addData("Gyro Angular Velocity(XYZ)", gyroA.getAngleVelocityXYZ());
+        telemetry.addData("Gyro Raw XYZ", gyroA.getRawXYZ());
 
     }
 
