@@ -10,7 +10,14 @@ public class BreakoutServo {
 
     //Enum for direction
     enum Direction {
-        SERVO_FORWARD, SERVO_REVERSE
+        SERVO_FORWARD(Servo.Direction.FORWARD),
+        SERVO_REVERSE(Servo.Direction.REVERSE);
+
+        private Servo.Direction servoDirection;
+
+        Direction(Servo.Direction motorDirection) {
+            this.servoDirection = motorDirection;
+        }
     }
 
     //Define servo as a Servo object
@@ -28,13 +35,7 @@ public class BreakoutServo {
 
     //Set the direction the servo rotates in (FORWARD or REVERSE)
     public void setDirection(Direction direction) {
-
-        if (direction == Direction.SERVO_FORWARD) {
-            servo.setDirection(Servo.Direction.FORWARD);
-        } else {
-            servo.setDirection(Servo.Direction.REVERSE);
-        }
-
+        servo.setDirection(direction.servoDirection);
     }
 
     //Set the position the servo is in (0-1)

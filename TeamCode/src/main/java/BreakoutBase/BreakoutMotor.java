@@ -1,7 +1,6 @@
 package BreakoutBase;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 /**
  * This class is used to simplify the usage of DC Motors in the code.
@@ -11,7 +10,14 @@ class BreakoutMotor {
 
     //Enum for direction
     enum Direction {
-        MOTOR_FORWARD, MOTOR_REVERSE
+        MOTOR_FORWARD(DcMotor.Direction.FORWARD),
+        MOTOR_REVERSE(DcMotor.Direction.REVERSE);
+
+        private DcMotor.Direction motorDirection;
+
+        Direction(DcMotor.Direction motorDirection) {
+            this.motorDirection = motorDirection;
+        }
     }
 
     //Define motor as a DcMotor
@@ -29,13 +35,7 @@ class BreakoutMotor {
 
     //Set the direction the motor turns in (FORWARD or REVERSE)
     public void setDirection(Direction direction) {
-
-        if (direction == Direction.MOTOR_FORWARD) {
-            motor.setDirection(DcMotorSimple.Direction.FORWARD);
-        } else {
-            motor.setDirection(DcMotorSimple.Direction.REVERSE);
-        }
-
+        motor.setDirection(direction.motorDirection);
     }
 
     //Set the power the motor turns at (0-1)
