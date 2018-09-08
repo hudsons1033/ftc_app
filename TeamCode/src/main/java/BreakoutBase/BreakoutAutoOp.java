@@ -35,8 +35,8 @@ public class BreakoutAutoOp extends OpMode {
         //Broken out servo class
         servoA.set(hardwareMap.servo.get("servoA"));
         servoB.set(hardwareMap.servo.get("servoB"));
-        servoA.setDirection(SERVO_R);
-        servoB.setDirection(SERVO_F);
+        servoA.setDirection(SERVO_F);
+        servoB.setDirection(SERVO_R);
         servoA.setPosition(0);
         servoB.setPosition(0);
 
