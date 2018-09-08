@@ -28,7 +28,7 @@ public class BreakoutGyro {
     private List<Float> velocity = new ArrayList<>();
 
     //Calibrate the sensor
-    public void calibrate() {
+    void calibrate() {
         gyroSensor.calibrate();
     }
 
@@ -43,7 +43,7 @@ public class BreakoutGyro {
     }
 
     //Retrieve the raw xyz data array
-    public List<Integer> getRawXYZ() {
+    List<Integer> getRawXYZ() {
         raw.add(gyroSensor.rawX());
         raw.add(gyroSensor.rawY());
         raw.add(gyroSensor.rawZ());
@@ -51,7 +51,7 @@ public class BreakoutGyro {
     }
 
     //Retrieve the angular orientation xyz data array
-    public List<Float> getOrientationXYZ() {
+    List<Float> getOrientationXYZ() {
         gyro = (IntegratingGyroscope) gyroSensor;
         Orientation angularOrientation = gyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
         angle.add(angularOrientation.firstAngle);
@@ -61,7 +61,7 @@ public class BreakoutGyro {
     }
 
     //Retrieve the angular velocity xyz data array
-    public List<Float> getAngleVelocityXYZ() {
+    List<Float> getAngleVelocityXYZ() {
         gyro = (IntegratingGyroscope) gyroSensor;
         AngularVelocity angularVelocity = gyro.getAngularVelocity(AngleUnit.DEGREES);
         velocity.add(angularVelocity.xRotationRate);
@@ -71,7 +71,7 @@ public class BreakoutGyro {
     }
 
     //Retrieve the heading of the sensor
-    public int getHeading() {
+    int getHeading() {
         return gyroSensor.getHeading();
     }
 

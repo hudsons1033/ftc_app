@@ -2,9 +2,12 @@ package BreakoutBase;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import static BreakoutBase.BreakoutMotor.Direction.MOTOR_FORWARD;
+import static BreakoutBase.BreakoutMotor.Direction.MOTOR_REVERSE;
+import static BreakoutBase.BreakoutServo.Direction.SERVO_FORWARD;
+import static BreakoutBase.BreakoutServo.Direction.SERVO_REVERSE;
 
 /**
  * This class is used for the main game to drive the robot using the controllers.
@@ -12,12 +15,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 @TeleOp(name = "Drive", group = "Pushbot")
 
 public class BreakoutDriveOp extends OpMode {
-
-    //Direction Constants
-    private DcMotor.Direction MOTOR_FORWARD = DcMotor.Direction.FORWARD;
-    private Servo.Direction SERVO_FORWARD = Servo.Direction.FORWARD;
-    private DcMotor.Direction MOTOR_REVERSE = DcMotor.Direction.REVERSE;
-    private Servo.Direction SERVO_REVERSE = Servo.Direction.REVERSE;
 
     //Servo Breakout code definition
     private BreakoutServo servoA = new BreakoutServo();
@@ -39,8 +36,8 @@ public class BreakoutDriveOp extends OpMode {
         //Broken out servo class
         servoA.set(hardwareMap.servo.get("servoA"));
         servoB.set(hardwareMap.servo.get("servoB"));
-        servoA.setDirection(SERVO_REVERSE);
-        servoB.setDirection(SERVO_FORWARD);
+        servoA.setDirection(SERVO_FORWARD);
+        servoB.setDirection(SERVO_REVERSE);
         servoA.setPosition(0);
         servoB.setPosition(0);
 
