@@ -4,8 +4,8 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import static BreakoutBase.BreakoutMotor.Direction.MOTOR_FORWARD;
-import static BreakoutBase.BreakoutMotor.Direction.MOTOR_REVERSE;
+import static BreakoutBase.BreakoutMotor.Direction.MOTOR_F;
+import static BreakoutBase.BreakoutMotor.Direction.MOTOR_R;
 import static BreakoutBase.BreakoutServo.Direction.SERVO_FORWARD;
 import static BreakoutBase.BreakoutServo.Direction.SERVO_REVERSE;
 
@@ -44,8 +44,8 @@ public class BreakoutDriveOp extends OpMode {
         //Broken out motor class
         motorA.set(hardwareMap.dcMotor.get("motorA"));
         motorB.set(hardwareMap.dcMotor.get("motorB"));
-        motorA.setDirection(MOTOR_FORWARD);
-        motorB.setDirection(MOTOR_REVERSE);
+        motorA.setDirection(MOTOR_F);
+        motorB.setDirection(MOTOR_R);
         motorA.setPower(0);
         motorB.setPower(0);
 

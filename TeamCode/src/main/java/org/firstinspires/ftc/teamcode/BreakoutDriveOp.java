@@ -6,8 +6,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import static org.firstinspires.ftc.teamcode.BreakoutMotor.Direction.MOTOR_FORWARD;
 import static org.firstinspires.ftc.teamcode.BreakoutMotor.Direction.MOTOR_REVERSE;
-import static org.firstinspires.ftc.teamcode.BreakoutServo.Direction.SERVO_FORWARD;
-import static org.firstinspires.ftc.teamcode.BreakoutServo.Direction.SERVO_REVERSE;
+import static org.firstinspires.ftc.teamcode.BreakoutServo.Direction.SERVO_F;
+import static org.firstinspires.ftc.teamcode.BreakoutServo.Direction.SERVO_R;
 
 /**
  * This class is used for the main game to drive the robot using the controllers.
@@ -36,8 +36,8 @@ public class BreakoutDriveOp extends OpMode {
         //Broken out servo class
         servoA.set(hardwareMap.servo.get("servoA"));
         servoB.set(hardwareMap.servo.get("servoB"));
-        servoA.setDirection(SERVO_FORWARD);
-        servoB.setDirection(SERVO_REVERSE);
+        servoA.setDirection(SERVO_F);
+        servoB.setDirection(SERVO_R);
         servoA.setPosition(0);
         servoB.setPosition(0);
 

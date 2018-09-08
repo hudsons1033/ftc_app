@@ -10,8 +10,8 @@ class BreakoutMotor {
 
     //Enum for direction
     enum Direction {
-        MOTOR_FORWARD(DcMotor.Direction.FORWARD),
-        MOTOR_REVERSE(DcMotor.Direction.REVERSE);
+        MOTOR_F(DcMotor.Direction.FORWARD),
+        MOTOR_R(DcMotor.Direction.REVERSE);
 
         private DcMotor.Direction motorDirection;
 

@@ -10,8 +10,8 @@ public class BreakoutServo {
 
     //Enum for direction
     enum Direction {
-        SERVO_FORWARD(Servo.Direction.FORWARD),
-        SERVO_REVERSE(Servo.Direction.REVERSE);
+        SERVO_F(Servo.Direction.FORWARD),
+        SERVO_R(Servo.Direction.REVERSE);
 
         private Servo.Direction servoDirection;
 
