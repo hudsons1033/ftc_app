@@ -6,8 +6,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import static BreakoutBase.BreakoutMotor.Direction.MOTOR_F;
 import static BreakoutBase.BreakoutMotor.Direction.MOTOR_R;
-import static BreakoutBase.BreakoutServo.Direction.SERVO_FORWARD;
-import static BreakoutBase.BreakoutServo.Direction.SERVO_REVERSE;
+import static BreakoutBase.BreakoutServo.Direction.SERVO_F;
+import static BreakoutBase.BreakoutServo.Direction.SERVO_R;
 
 /**
  * This class is used for the Autonomous segment of the game. No controllers are to be used.
@@ -35,8 +35,8 @@ public class BreakoutAutoOp extends OpMode {
         //Broken out servo class
         servoA.set(hardwareMap.servo.get("servoA"));
         servoB.set(hardwareMap.servo.get("servoB"));
-        servoA.setDirection(SERVO_REVERSE);
-        servoB.setDirection(SERVO_FORWARD);
+        servoA.setDirection(SERVO_R);
+        servoB.setDirection(SERVO_F);
         servoA.setPosition(0);
         servoB.setPosition(0);
 

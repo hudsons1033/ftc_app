@@ -18,6 +18,7 @@ class BreakoutMotor {
         Direction(DcMotor.Direction motorDirection) {
             this.motorDirection = motorDirection;
         }
+
     }
 
     //Define motor as a DcMotor
