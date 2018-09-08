@@ -8,6 +8,11 @@ import com.qualcomm.robotcore.hardware.Servo;
  **/
 public class BreakoutServo {
 
+    //Enum for direction
+    enum Direction {
+        SERVO_FORWARD, SERVO_REVERSE
+    }
+
     //Define servo as a Servo object
     private Servo servo;
 
@@ -22,8 +27,14 @@ public class BreakoutServo {
     }
 
     //Set the direction the servo rotates in (FORWARD or REVERSE)
-    public void setDirection(Servo.Direction direction) {
-        servo.setDirection(direction);
+    public void setDirection(Direction direction) {
+
+        if (direction == Direction.SERVO_FORWARD) {
+            servo.setDirection(Servo.Direction.FORWARD);
+        } else {
+            servo.setDirection(Servo.Direction.REVERSE);
+        }
+
     }
 
     //Set the position the servo is in (0-1)

@@ -2,9 +2,12 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+
+import static org.firstinspires.ftc.teamcode.BreakoutMotor.Direction.MOTOR_FORWARD;
+import static org.firstinspires.ftc.teamcode.BreakoutMotor.Direction.MOTOR_REVERSE;
+import static org.firstinspires.ftc.teamcode.BreakoutServo.Direction.SERVO_FORWARD;
+import static org.firstinspires.ftc.teamcode.BreakoutServo.Direction.SERVO_REVERSE;
 
 /**
  * This class is used for the Autonomous segment of the game. No controllers are to be used.
@@ -12,12 +15,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 @Autonomous(name = "BreakoutAutonomous", group = "pushbot")
 
 public class BreakoutAutoOp extends OpMode {
-
-    //Direction Constants
-    private DcMotor.Direction MOTOR_FORWARD = DcMotor.Direction.FORWARD;
-    private Servo.Direction SERVO_FORWARD = Servo.Direction.FORWARD;
-    private DcMotor.Direction MOTOR_REVERSE = DcMotor.Direction.REVERSE;
-    private Servo.Direction SERVO_REVERSE = Servo.Direction.REVERSE;
 
     //Servo Breakout code definition
     private BreakoutServo servoA = new BreakoutServo();
