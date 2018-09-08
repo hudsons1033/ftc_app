@@ -15,8 +15,8 @@ public class BreakoutServo {
 
         private Servo.Direction servoDirection;
 
-        Direction(Servo.Direction motorDirection) {
-            this.servoDirection = motorDirection;
+        Direction(Servo.Direction servoDirection) {
+            this.servoDirection = servoDirection;
         }
 
     }
