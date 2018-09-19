@@ -21,8 +21,8 @@ public class BreakoutDriveOp extends OpMode {
     private BreakoutServo servoB = new BreakoutServo();
 
     //Motor Breakout code definition
-    private BreakoutMotor motorA = new BreakoutMotor();
-    private BreakoutMotor motorB = new BreakoutMotor();
+    private BreakoutMotor motorLeft = new BreakoutMotor();
+    private BreakoutMotor motorRight = new BreakoutMotor();
 
     //Gyro Breakout code definition
     private BreakoutGyro gyroA = new BreakoutGyro();
@@ -42,12 +42,12 @@ public class BreakoutDriveOp extends OpMode {
         servoB.setPosition(0);
 
         //Broken out motor class
-        motorA.set(hardwareMap.dcMotor.get("motorA"));
-        motorB.set(hardwareMap.dcMotor.get("motorB"));
-        motorA.setDirection(MOTOR_F);
-        motorB.setDirection(MOTOR_R);
-        motorA.setPower(0);
-        motorB.setPower(0);
+        motorLeft.set(hardwareMap.dcMotor.get("motorLeft"));
+        motorRight.set(hardwareMap.dcMotor.get("motorRight"));
+        motorLeft.setDirection(MOTOR_F);
+        motorRight.setDirection(MOTOR_R);
+        motorLeft.setPower(0);
+        motorRight.setPower(0);
 
         //Broken out Gyro class
         gyroA.set(hardwareMap.gyroSensor.get("gyroA"));
@@ -71,8 +71,8 @@ public class BreakoutDriveOp extends OpMode {
     public void start() {
 
         //Motor start
-        motorA.setPower(0);
-        motorB.setPower(0);
+        motorLeft.setPower(0);
+        motorRight.setPower(0);
 
         //Servo start
         servoA.setPosition(0);
@@ -95,8 +95,8 @@ public class BreakoutDriveOp extends OpMode {
         float rightStick2y = gamepad2.right_stick_y;
 
         //Move the motors
-        motorA.setPower(-leftStick1y);
-        motorB.setPower(-rightStick1y);
+        motorLeft.setPower(-leftStick1y);
+        motorRight.setPower(-rightStick1y);
 
         //Set the servos
         servoA.setPosition(leftStick2y);
@@ -122,8 +122,8 @@ public class BreakoutDriveOp extends OpMode {
     public void stop() {
 
         //Motor stop
-        motorA.setPower(0);
-        motorB.setPower(0);
+        motorLeft.setPower(0);
+        motorRight.setPower(0);
 
         //Servo stop
         servoA.setPosition(0);
