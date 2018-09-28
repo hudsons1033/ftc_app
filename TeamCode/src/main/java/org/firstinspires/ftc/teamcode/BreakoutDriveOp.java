@@ -23,9 +23,10 @@ public class BreakoutDriveOp extends OpMode {
     //Motor Breakout code definition
     private BreakoutMotor motorLeft = new BreakoutMotor();
     private BreakoutMotor motorRight = new BreakoutMotor();
+    private BreakoutMotor motorCombine = new BreakoutMotor();
 
     //Gyro Breakout code definition
-    private BreakoutGyro gyroA = new BreakoutGyro();
+    private BreakoutREVGyro gyroA = new BreakoutREVGyro();
 
     //Timer definition
     private ElapsedTime timer = new ElapsedTime();
@@ -44,17 +45,18 @@ public class BreakoutDriveOp extends OpMode {
         //Broken out motor class
         motorLeft.set(hardwareMap.dcMotor.get("motorLeft"));
         motorRight.set(hardwareMap.dcMotor.get("motorRight"));
+        motorCombine.set(hardwareMap.dcMotor.get("motorCombine"));
         motorLeft.setDirection(MOTOR_F);
         motorRight.setDirection(MOTOR_R);
         motorLeft.setPower(0);
         motorRight.setPower(0);
 
         //Broken out Gyro class
-        gyroA.set(hardwareMap.gyroSensor.get("gyroA"));
+        gyroA.set(hardwareMap.get(gyroA.IMU, "gyroA"));
         telemetry.addLine("Calibrating: DO NOT MOVE!");
         gyroA.calibrate();
         timer.reset();
-        while (gyroA.gyroSensor.isCalibrating()) {
+        while (gyroA.isCalibrating()) {
             telemetry.addData("Calibrating: ", Math.round(timer.seconds()) + " seconds");
             telemetry.update();
             try {
@@ -97,6 +99,13 @@ public class BreakoutDriveOp extends OpMode {
         //Move the motors
         motorLeft.setPower(-leftStick1y);
         motorRight.setPower(-rightStick1y);
+        if (gamepad2.a) {
+            motorCombine.setPower(1);
+        } else if (gamepad2.b) {
+            motorCombine.setPower(-1);
+        } else {
+            motorCombine.setPower(0);
+        }
 
         //Set the servos
         servoA.setPosition(leftStick2y);
@@ -111,10 +120,10 @@ public class BreakoutDriveOp extends OpMode {
         telemetry.addData("Left Stick Y 2", leftStick2y);
         telemetry.addData("Right Stick X 2", rightStick2x);
         telemetry.addData("Right Stick Y 2", rightStick2y);
-        telemetry.addData("Gyro Heading", gyroA.getHeading());
-        telemetry.addData("Gyro Orientation (XYZ)", gyroA.getOrientationXYZ());
-        telemetry.addData("Gyro Angular Velocity(XYZ)", gyroA.getAngleVelocityXYZ());
-        telemetry.addData("Gyro Raw XYZ", gyroA.getRawXYZ());
+        telemetry.addData("Gyro Heading", gyroA.getPos());
+        telemetry.addData("Gyro Orientation", gyroA.getOrient());
+        telemetry.addData("Gyro Velocity", gyroA.getVel());
+        telemetry.addData("Gyro Acceleration", gyroA.getAccel());
 
     }
 

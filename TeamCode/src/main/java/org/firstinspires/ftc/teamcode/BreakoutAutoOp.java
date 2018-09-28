@@ -25,7 +25,7 @@ public class BreakoutAutoOp extends OpMode {
     private BreakoutMotor motorB = new BreakoutMotor();
 
     //Gyro Breakout code definition
-    private BreakoutGyro gyroA = new BreakoutGyro();
+    private BreakoutREVGyro gyroA = new BreakoutREVGyro();
 
     //Timer definition
     private ElapsedTime timer = new ElapsedTime();
@@ -49,11 +49,11 @@ public class BreakoutAutoOp extends OpMode {
         motorB.setPower(0);
 
         //Broken out Gyro class
-        gyroA.set(hardwareMap.gyroSensor.get("gyroA"));
+        gyroA.set(hardwareMap.get(gyroA.IMU, "gyroA"));
         telemetry.addLine("Calibrating: DO NOT MOVE!");
         gyroA.calibrate();
         timer.reset();
-        while (gyroA.gyroSensor.isCalibrating()) {
+        while (gyroA.isCalibrating()) {
             telemetry.addData("Calibrating: ", Math.round(timer.seconds()) + " seconds");
             telemetry.update();
             try {

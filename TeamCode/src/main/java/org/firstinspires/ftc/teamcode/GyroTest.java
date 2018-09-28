@@ -7,13 +7,13 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 public class GyroTest extends OpMode {
 
-    BreakoutGyro gyro = new BreakoutGyro();
+    BreakoutREVGyro gyro = new BreakoutREVGyro();
 
     @Override
     public void init() {
-        gyro.set(hardwareMap.gyroSensor.get("gyroA"));
+        gyro.set(hardwareMap.get(gyro.IMU, "gyroA"));
         gyro.calibrate();
-        while (gyro.gyroSensor.isCalibrating()) {
+        while (gyro.isCalibrating()) {
             telemetry.addData("Calibrating", "");
         }
         telemetry.clear();
@@ -21,9 +21,10 @@ public class GyroTest extends OpMode {
 
     @Override
     public void loop() {
-        telemetry.addData("Gyro Heading", gyro.getHeading());
-        telemetry.addData("Gyro Angular Velocity XYZ", gyro.getAngleVelocityXYZ());
-        telemetry.addData("Gyro Raw XYZ", gyro.getRawXYZ());
-        telemetry.addData("Gyro Orientation XYZ", gyro.getOrientationXYZ());
+        telemetry.addData("Gyro Heading", gyro.getPos());
+        telemetry.addData("Gyro Orientation", gyro.getOrient());
+        telemetry.addData("Gyro Velocity", gyro.getVel());
+        telemetry.addData("Gyro Acceleration", gyro.getAccel());
     }
+
 }
