@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package ExampleCode;
 
 import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.hardware.IntegratingGyroscope;
@@ -16,6 +16,7 @@ import java.util.List;
  * This class is used to simplify the usage of Gyroscopes in the code.
  * Please use this class instead of the IntegratingGyroscope or GyroSensor classes.
  **/
+@Deprecated
 public class BreakoutGyro {
 
     //Define objects
