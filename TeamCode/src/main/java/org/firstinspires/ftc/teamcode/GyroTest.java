@@ -12,11 +12,9 @@ public class GyroTest extends OpMode {
     @Override
     public void init() {
         gyro.set(hardwareMap.get(gyro.IMU, "gyroA"));
+        telemetry.addLine("Calibrating: DO NOT MOVE!");
         gyro.calibrate();
-        while (gyro.isCalibrating()) {
-            telemetry.addData("Calibrating", "");
-        }
-        telemetry.clear();
+        telemetry.clearAll();
     }
 
     @Override

@@ -52,17 +52,7 @@ public class BreakoutAutoOp extends OpMode {
         gyroA.set(hardwareMap.get(gyroA.IMU, "gyroA"));
         telemetry.addLine("Calibrating: DO NOT MOVE!");
         gyroA.calibrate();
-        timer.reset();
-        while (gyroA.isCalibrating()) {
-            telemetry.addData("Calibrating: ", Math.round(timer.seconds()) + " seconds");
-            telemetry.update();
-            try {
-                wait(50);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-        }
+        telemetry.clearAll();
 
     }
 
