@@ -12,7 +12,7 @@ import static org.firstinspires.ftc.teamcode.BreakoutServo.Direction.SERVO_R;
 /**
  * This class is used for the Autonomous segment of the game. No controllers are to be used.
  **/
-@Autonomous(name = "BreakoutAutonomous", group = "pushbot")
+@Autonomous(name = "Autonomous", group = "pushbot")
 
 public class BreakoutAutoOp extends OpMode {
 

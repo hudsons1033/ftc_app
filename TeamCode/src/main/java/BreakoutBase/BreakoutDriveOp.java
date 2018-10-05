@@ -12,7 +12,7 @@ import static BreakoutBase.BreakoutServo.Direction.SERVO_R;
 /**
  * This class is used for the main game to drive the robot using the controllers.
  **/
-@TeleOp(name = "Drive", group = "Pushbot")
+@TeleOp(name = "BreakoutDrive", group = "Pushbot")
 
 public class BreakoutDriveOp extends OpMode {
 
