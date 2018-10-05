@@ -12,7 +12,7 @@ import static BreakoutBase.BreakoutServo.Direction.SERVO_R;
 /**
  * This class is used for the Autonomous segment of the game. No controllers are to be used.
  **/
-@Autonomous(name = "BreakoutAutonomous", group = "pushbot")
+//@Autonomous(name = "BreakoutAutonomous", group = "pushbot")
 
 public class BreakoutAutoOp extends OpMode {
 
