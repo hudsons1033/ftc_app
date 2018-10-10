@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-@Autonomous(name = "AutoTest", group = "Pushbot")
+//@Autonomous(name = "AutoTest", group = "Pushbot")
 
 public class AutoTest extends OpMode {
 
