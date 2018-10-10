@@ -12,7 +12,7 @@ import static BreakoutBase.BreakoutServo.Direction.SERVO_R;
 /**
  * This class is used for the main game to drive the robot using the controllers.
  **/
-@TeleOp(name = "Drive", group = "Pushbot")
+//@TeleOp(name = "BreakoutDrive", group = "Pushbot")
 
 public class BreakoutDriveOp extends OpMode {
 
@@ -53,17 +53,7 @@ public class BreakoutDriveOp extends OpMode {
         gyroA.set(hardwareMap.get(gyroA.IMU, "gyroA"));
         telemetry.addLine("Calibrating: DO NOT MOVE!");
         gyroA.calibrate();
-        timer.reset();
-        while (gyroA.isCalibrating()) {
-            telemetry.addData("Calibrating: ", Math.round(timer.seconds()) + " seconds");
-            telemetry.update();
-            try {
-                wait(50);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-        }
+        telemetry.clearAll();
 
     }
 

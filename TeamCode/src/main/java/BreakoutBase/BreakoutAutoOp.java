@@ -12,7 +12,7 @@ import static BreakoutBase.BreakoutServo.Direction.SERVO_R;
 /**
  * This class is used for the Autonomous segment of the game. No controllers are to be used.
  **/
-@Autonomous(name = "BreakoutAutonomous", group = "pushbot")
+//@Autonomous(name = "BreakoutAutonomous", group = "pushbot")
 
 public class BreakoutAutoOp extends OpMode {
 
@@ -52,17 +52,7 @@ public class BreakoutAutoOp extends OpMode {
         gyroA.set(hardwareMap.get(gyroA.IMU, "gyroA"));
         telemetry.addLine("Calibrating: DO NOT MOVE!");
         gyroA.calibrate();
-        timer.reset();
-        while (gyroA.isCalibrating()) {
-            telemetry.addData("Calibrating: ", Math.round(timer.seconds()) + " seconds");
-            telemetry.update();
-            try {
-                wait(50);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-        }
+        telemetry.clearAll();
 
     }
 
