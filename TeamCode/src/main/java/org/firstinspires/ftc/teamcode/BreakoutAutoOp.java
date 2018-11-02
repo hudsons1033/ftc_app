@@ -5,8 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
@@ -16,14 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES;
-import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
-import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.YZX;
-import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.EXTRINSIC;
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
-import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.FRONT;
 import static org.firstinspires.ftc.teamcode.BreakoutMotor.Direction.MOTOR_F;
-import static org.firstinspires.ftc.teamcode.BreakoutMotor.Direction.MOTOR_R;
 
 /**
  * This class is used for the Autonomous segment of the game. No controllers are to be used.
@@ -39,10 +32,8 @@ public class BreakoutAutoOp extends OpMode {
     private boolean found = false;
     private boolean firstRun = true;
     private String trackableName = "";
+    double i = 0;
 
-    private static final float mmPerInch        = 25.4f;
-    private static final float mmFTCFieldWidth  = (12*6) * mmPerInch;
-    private static final float mmTargetHeight   = (6) * mmPerInch;
 
     private List<VuforiaTrackable> allTrackables = new ArrayList<>();
 
@@ -53,15 +44,15 @@ public class BreakoutAutoOp extends OpMode {
 
     private BreakoutREVGyro gyroA = new BreakoutREVGyro();
 
-    private ElapsedTime timer = new ElapsedTime();
-    private ElapsedTime timer2 = new ElapsedTime();
+    private ElapsedTime totalTime = new ElapsedTime();
+    private ElapsedTime startTime = new ElapsedTime();
 
     private double accumulation_of_error;
     private double last_error;
 
-    private double pid() {
-        double delta_time = timer2.now(TimeUnit.MILLISECONDS);
-        double error = 0 - gyroA.getOrient().firstAngle;
+    private double pid(double cenLinAng) {
+        double delta_time = startTime.now(TimeUnit.MILLISECONDS);
+        double error = cenLinAng - gyroA.getOrient().firstAngle;
         accumulation_of_error += error * delta_time;
         double derivative_of_error = (error - last_error) / delta_time;
         last_error = error;
@@ -78,7 +69,7 @@ public class BreakoutAutoOp extends OpMode {
     @Override
     public void init() {
 
-        timer.reset();
+        totalTime.reset();
         //Broken out motor class
         motorA.set(hardwareMap.dcMotor.get("motorA"));
         motorB.set(hardwareMap.dcMotor.get("motorB"));
@@ -103,6 +94,7 @@ public class BreakoutAutoOp extends OpMode {
 
     @Override
     public void start() {
+        startTime.reset();
         motorA.setPower(0);
         motorB.setPower(0);
         motorC.setPower(0);
@@ -110,24 +102,29 @@ public class BreakoutAutoOp extends OpMode {
     }
 
     private void blueRover() {
-        timer2.reset();
+        startTime.reset();
+        motorA.setPower(Math.max(0, Math.min(1, pid(0)+0.5)));
         motorB.setPower(0.5);
         motorC.setPower(0);
         motorD.setPower(0);
-        motorA.setPower(Math.max(0, Math.min(1, pid()+0.5)));
         telemetry.update();
         //motorA.setPower(0);
         //motorB.setPower(0);
     }
 
     private void redFootprint() {
-        motorB.setPower(1);
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        motorA.setPower(0);
         motorB.setPower(0);
+        motorC.setPower(0);
+        motorD.setPower(0);
+        Position x = gyroA.get().getPosition();
+        telemetry.addLine("x: " + x.x);
+        telemetry.addLine("y: " + x.y);
+        telemetry.addLine("z: " + x.z);
+        i += 0.1;
+        telemetry.addLine("i: " + i);
+        telemetry.update();
+        motorA.setPower(1);
     }
 
     private void frontCraters() {
@@ -177,40 +174,6 @@ public class BreakoutAutoOp extends OpMode {
 
             targetsRoverRuckus.activate();
 
-            OpenGLMatrix blueRoverLocationOnField = OpenGLMatrix
-                    .translation(0, mmFTCFieldWidth, mmTargetHeight)
-                    .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0, 0));
-            blueRover.setLocation(blueRoverLocationOnField);
-
-            OpenGLMatrix redFootprintLocationOnField = OpenGLMatrix
-                    .translation(0, -mmFTCFieldWidth, mmTargetHeight)
-                    .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0, 180));
-            redFootprint.setLocation(redFootprintLocationOnField);
-
-            OpenGLMatrix frontCratersLocationOnField = OpenGLMatrix
-                    .translation(-mmFTCFieldWidth, 0, mmTargetHeight)
-                    .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0 , 90));
-            frontCraters.setLocation(frontCratersLocationOnField);
-
-            OpenGLMatrix backSpaceLocationOnField = OpenGLMatrix
-                    .translation(mmFTCFieldWidth, 0, mmTargetHeight)
-                    .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0, -90));
-            backSpace.setLocation(backSpaceLocationOnField);
-
-            final int CAMERA_FORWARD_DISPLACEMENT  = 110;   // eg: Camera is 110 mm in front of robot center
-            final int CAMERA_VERTICAL_DISPLACEMENT = 200;   // eg: Camera is 200 mm above ground
-            final int CAMERA_LEFT_DISPLACEMENT     = 0;     // eg: Camera is ON the robot's center line
-
-            OpenGLMatrix phoneLocationOnRobot = OpenGLMatrix
-                    .translation(CAMERA_FORWARD_DISPLACEMENT, CAMERA_LEFT_DISPLACEMENT, CAMERA_VERTICAL_DISPLACEMENT)
-                    .multiplied(Orientation.getRotationMatrix(EXTRINSIC, YZX, DEGREES,
-                            CAMERA_CHOICE == FRONT ? 90 : -90, 0, 0));
-
-            /*  Let all the trackable listeners know where the phone is.  */
-            for (VuforiaTrackable trackable : allTrackables)
-            {
-                ((VuforiaTrackableDefaultListener)trackable.getListener()).setPhoneInformation(phoneLocationOnRobot, parameters.cameraDirection);
-            }
         }
 
         if (!found) {
@@ -223,31 +186,28 @@ public class BreakoutAutoOp extends OpMode {
                     this.trackableName = trackable.getName();
                     telemetry.addData("Visible Target", trackable.getName());
                     found = true;
-                    timer2.reset();
+                    startTime.reset();
                     break;
                 }
             }
         }
 
-//        switch (trackableName) {
-//            case "Blue-Rover":
-//                blueRover();
-//            case "Red-Footprint":
-//                redFootprint();
-//                stop();
-//                break;
-//            case "Front-Craters":
-//                frontCraters();
-//                stop();
-//                break;
-//            case "Back-Space":
-//                backSpace();
-//                stop();
-//                break;
-//            case "":
-//                break;
-//        }
-        blueRover();
+        switch (trackableName) {
+            case "Blue-Rover":
+                blueRover();
+                break;
+            case "Red-Footprint":
+                redFootprint();
+                break;
+            case "Front-Craters":
+                frontCraters();
+                break;
+            case "Back-Space":
+                backSpace();
+                break;
+            case "":
+                break;
+        }
     }
 
     @Override
