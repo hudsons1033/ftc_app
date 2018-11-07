@@ -21,7 +21,7 @@ public class BreakoutDriveOp extends OpMode {
     private BreakoutMotor motorLeft = new BreakoutMotor();
     private BreakoutMotor motorRight = new BreakoutMotor();
     private BreakoutMotor motorHorizontal = new BreakoutMotor();
-    // private BreakoutMotor motorVertical = new BreakoutMotor();
+    private BreakoutMotor motorSweeperArm = new BreakoutMotor();
     private BreakoutMotor motorSweeper = new BreakoutMotor();
 
     //Gyro Breakout code definition
@@ -52,7 +52,7 @@ public class BreakoutDriveOp extends OpMode {
         motorRight.set(hardwareMap.dcMotor.get("motorRight"));
         motorSweeper.set(hardwareMap.dcMotor.get("motorSweeper"));
         motorHorizontal.set(hardwareMap.dcMotor.get("motorHorizontal"));
-        // motorVertical.set(hardwareMap.dcMotor.get("motorVertical"));
+        motorSweeperArm.set(hardwareMap.dcMotor.get("motorSweeperArm"));
         motorLeft.setDirection(MOTOR_F);
         motorRight.setDirection(MOTOR_F);
         motorLeft.setPower(0);
@@ -98,13 +98,13 @@ public class BreakoutDriveOp extends OpMode {
         //Move the motors
         motorLeft.setPower(-leftStick1y);
         motorRight.setPower(-rightStick1y);
-        /*if (gamepad2.y) {
-            motorVertical.setPower(1);
+        if (gamepad2.y) {
+            motorSweeperArm.setPower(1);
         } else if (gamepad2.a) {
-            motorVertical.setPower(-1);
+            motorSweeperArm.setPower(-1);
         } else {
-            motorVertical.setPower(0);
-        }*/
+            motorSweeperArm.setPower(0);
+        }
         if (gamepad2.x) {
             motorHorizontal.setPower(1);
         } else if (gamepad2.b) {
@@ -146,9 +146,9 @@ public class BreakoutDriveOp extends OpMode {
         //Motor stop
         motorLeft.setPower(0);
         motorRight.setPower(0);
-        // motorSweeper.setPower(0);
-        // motorHorizontal.setPower(0);
-        ///  motorVertical.setPower(0);
+        motorSweeper.setPower(0);
+        motorHorizontal.setPower(0);
+        motorSweeperArm.setPower(0);
 
         //Servo stop
         // servoA.setPosition(0);
