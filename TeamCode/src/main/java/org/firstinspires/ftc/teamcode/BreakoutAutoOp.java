@@ -5,10 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.navigation.Position;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 import java.util.ArrayList;
@@ -16,6 +14,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
+import static org.firstinspires.ftc.teamcode.BreakoutMotor.Direction.MOTOR_R;
 import static org.firstinspires.ftc.teamcode.BreakoutMotor.Direction.MOTOR_F;
 
 /**
@@ -37,30 +36,33 @@ public class BreakoutAutoOp extends OpMode {
 
     private List<VuforiaTrackable> allTrackables = new ArrayList<>();
 
-    private BreakoutMotor motorA = new BreakoutMotor();
-    private BreakoutMotor motorB = new BreakoutMotor();
-    private BreakoutMotor motorC = new BreakoutMotor();
-    private BreakoutMotor motorD = new BreakoutMotor();
+    private BreakoutMotor motorLeft = new BreakoutMotor();
+    private BreakoutMotor motorRight = new BreakoutMotor();
+    private BreakoutMotor motorSweeper = new BreakoutMotor();
+    private BreakoutMotor motorSweeperArm = new BreakoutMotor();
+    private BreakoutMotor motorHorizontal = new BreakoutMotor();
 
     private BreakoutREVGyro gyroA = new BreakoutREVGyro();
 
     private ElapsedTime totalTime = new ElapsedTime();
     private ElapsedTime startTime = new ElapsedTime();
 
-    private double accumulation_of_error;
+    private double integral;
     private double last_error;
 
     private double pid(double cenLinAng) {
         double delta_time = startTime.now(TimeUnit.MILLISECONDS);
         double error = cenLinAng - gyroA.getOrient().firstAngle;
-        accumulation_of_error += error * delta_time;
-        double derivative_of_error = (error - last_error) / delta_time;
+        integral += error * delta_time;
+        double derivative = (error - last_error) / delta_time;
         last_error = error;
-        double out = (error * 0.1) + (accumulation_of_error * 0) + (derivative_of_error * 0);
+        double var = (error * 0.33) + (integral * 0) + (derivative * 0);
+        double out = 1-var*0.01
+        telemetry.addData("angle", gyroA.getOrient().firstAngle);
         telemetry.addData("delta_time", delta_time);
         telemetry.addData("error", error);
-        telemetry.addData("accumulation of error", accumulation_of_error);
-        telemetry.addData("derivative of error", derivative_of_error);
+        telemetry.addData("accumulation of error", integral);
+        telemetry.addData("derivative of error", derivative);
         telemetry.addData("last error", last_error);
         telemetry.addData("out", out);
         return out;
@@ -70,19 +72,22 @@ public class BreakoutAutoOp extends OpMode {
     public void init() {
 
         totalTime.reset();
-        //Broken out motor class
-        motorA.set(hardwareMap.dcMotor.get("motorA"));
-        motorB.set(hardwareMap.dcMotor.get("motorB"));
-        motorC.set(hardwareMap.dcMotor.get("motorC"));
-        motorD.set(hardwareMap.dcMotor.get("motorD"));
-        motorA.setDirection(MOTOR_F);
-        motorB.setDirection(MOTOR_F);
-        motorC.setDirection(MOTOR_F);
-        motorD.setDirection(MOTOR_F);
-        motorA.setPower(0);
-        motorB.setPower(0);
-        motorC.setPower(0);
-        motorD.setPower(0);
+        //Broken out motorSweeper class
+        motorLeft.set(hardwareMap.dcMotor.get("motorLeft"));
+        motorRight.set(hardwareMap.dcMotor.get("motorRight"));
+        motorSweeper.set(hardwareMap.dcMotor.get("motorSweeper"));
+        motorSweeperArm.set(hardwareMap.dcMotor.get("motorSweeperArm"));
+        motorHorizontal.set(hardwareMap.dcMotor.get("motorHorizontal"));
+        motorLeft.setDirection(MOTOR_R);
+        motorRight.setDirection(MOTOR_R);
+        motorSweeper.setDirection(MOTOR_F);
+        motorSweeperArm.setDirection(MOTOR_F);
+        motorHorizontal.setDirection(MOTOR_F);
+        motorLeft.setPower(0);
+        motorRight.setPower(0);
+        motorSweeper.setPower(0);
+        motorSweeperArm.setPower(0);
+        motorHorizontal.setPower(0);
 
         //Broken out Gyro class
         gyroA.set(hardwareMap.get(gyroA.IMU, "gyroA"));
@@ -95,56 +100,45 @@ public class BreakoutAutoOp extends OpMode {
     @Override
     public void start() {
         startTime.reset();
-        motorA.setPower(0);
-        motorB.setPower(0);
-        motorC.setPower(0);
-        motorD.setPower(0);
+        motorLeft.setPower(0);
+        motorRight.setPower(0);
+        motorSweeper.setPower(0);
+        motorSweeperArm.setPower(0);
     }
 
     private void blueRover() {
-        startTime.reset();
-        motorA.setPower(Math.max(0, Math.min(1, pid(0)+0.5)));
-        motorB.setPower(0.5);
-        motorC.setPower(0);
-        motorD.setPower(0);
+        double centerAng = 0;
+        if(gyroA.getOrient().firstAngle <= centerAng) {
+            motorLeft.setPower(Math.max(0, Math.min(1, pid(centerAng))));
+            motorRight.setPower(1);
+        } else {
+            motorLeft.setPower(1);
+            motorRight.setPower(Math.max(0, Math.min(1, pid(centerAng))));
+        }
         telemetry.update();
-        //motorA.setPower(0);
-        //motorB.setPower(0);
     }
 
     private void redFootprint() {
-        motorA.setPower(0);
-        motorB.setPower(0);
-        motorC.setPower(0);
-        motorD.setPower(0);
-        Position x = gyroA.get().getPosition();
-        telemetry.addLine("x: " + x.x);
-        telemetry.addLine("y: " + x.y);
-        telemetry.addLine("z: " + x.z);
-        i += 0.1;
-        telemetry.addLine("i: " + i);
+        motorLeft.setPower(0);
+        motorRight.setPower(0);
+        telemetry.addLine("vel" + gyroA.getVel());
         telemetry.update();
-        motorA.setPower(1);
     }
 
     private void frontCraters() {
-        motorC.setPower(1);
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        motorC.setPower(0);
     }
 
     private void backSpace() {
-        motorD.setPower(1);
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        motorD.setPower(0);
     }
 
     @Override
@@ -176,45 +170,48 @@ public class BreakoutAutoOp extends OpMode {
 
         }
 
-        if (!found) {
-            motorA.setPower(1);
-            motorB.setPower(1);
-            motorC.setPower(1);
-            motorD.setPower(1);
-            for (VuforiaTrackable trackable : allTrackables) {
-                if (((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible()) {
-                    this.trackableName = trackable.getName();
-                    telemetry.addData("Visible Target", trackable.getName());
-                    found = true;
-                    startTime.reset();
-                    break;
-                }
-            }
-        }
+//        if (!found) {
+//            motorLeft.setPower(1);
+//            motorRight.setPower(1);
+////            motorC.setPower(1);
+////            motorSweeperArm.setPower(1);
+//            for (VuforiaTrackable trackable : allTrackables) {
+//                if (((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible()) {
+//                    this.trackableName = trackable.getName();
+//                    telemetry.addData("Visible Target", trackable.getName());
+//                    found = true;
+//                    startTime.reset();
+//                    break;
+//                }
+//            }
+//        }
 
-        switch (trackableName) {
-            case "Blue-Rover":
-                blueRover();
-                break;
-            case "Red-Footprint":
-                redFootprint();
-                break;
-            case "Front-Craters":
-                frontCraters();
-                break;
-            case "Back-Space":
-                backSpace();
-                break;
-            case "":
-                break;
-        }
+//        switch (trackableName) {
+//            case "Blue-Rover":
+//                blueRover();
+//                break;
+//            case "Red-Footprint":
+//                redFootprint();
+//                break;
+//            case "Front-Craters":
+//                frontCraters();
+//                break;
+//            case "Back-Space":
+//                backSpace();
+//                break;
+//            case "":
+//                startTime.reset();
+//                break;
+//        }
+
     }
 
     @Override
     public void stop() {
-        motorA.setPower(0);
-        motorB.setPower(0);
-        motorC.setPower(0);
-        motorD.setPower(0);
+        motorLeft.setPower(0);
+        motorRight.setPower(0);
+        motorSweeper.setPower(0);
+        motorSweeperArm.setPower(0);
+        motorHorizontal.setPower(0);
     }
 }
