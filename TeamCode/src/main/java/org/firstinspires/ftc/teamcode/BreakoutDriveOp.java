@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import static org.firstinspires.ftc.teamcode.BreakoutMotor.Direction.MOTOR_F;
-import static org.firstinspires.ftc.teamcode.BreakoutMotor.Direction.MOTOR_R;
 
 /**
  * This class is used for the main game to drive the robot using the controllers.
@@ -21,9 +20,9 @@ public class BreakoutDriveOp extends OpMode {
 
     private BreakoutMotor motorLeft = new BreakoutMotor();
     private BreakoutMotor motorRight = new BreakoutMotor();
-    // private BreakoutMotor motorHorizontal = new BreakoutMotor();
+    private BreakoutMotor motorHorizontal = new BreakoutMotor();
     // private BreakoutMotor motorVertical = new BreakoutMotor();
-    // private BreakoutMotor motorSweeper = new BreakoutMotor();
+    private BreakoutMotor motorSweeper = new BreakoutMotor();
 
     //Gyro Breakout code definition
     //private BreakoutREVGyro gyroA = new BreakoutREVGyro();
@@ -51,11 +50,11 @@ public class BreakoutDriveOp extends OpMode {
         //Broken out motor class
         motorLeft.set(hardwareMap.dcMotor.get("motorLeft"));
         motorRight.set(hardwareMap.dcMotor.get("motorRight"));
-        // motorSweeper.set(hardwareMap.dcMotor.get("motorSweeper"));
-        // motorHorizontal.set(hardwareMap.dcMotor.get("motorHorizontal"));
+        motorSweeper.set(hardwareMap.dcMotor.get("motorSweeper"));
+        motorHorizontal.set(hardwareMap.dcMotor.get("motorHorizontal"));
         // motorVertical.set(hardwareMap.dcMotor.get("motorVertical"));
         motorLeft.setDirection(MOTOR_F);
-        motorRight.setDirection(MOTOR_R);
+        motorRight.setDirection(MOTOR_F);
         motorLeft.setPower(0);
         motorRight.setPower(0);
 
@@ -97,15 +96,15 @@ public class BreakoutDriveOp extends OpMode {
         boolean rightBumper = gamepad2.right_bumper;
 
         //Move the motors
-        motorLeft.setPower(leftStick1y);
-        motorRight.setPower(rightStick1y);
+        motorLeft.setPower(-leftStick1y);
+        motorRight.setPower(-rightStick1y);
         /*if (gamepad2.y) {
             motorVertical.setPower(1);
         } else if (gamepad2.a) {
             motorVertical.setPower(-1);
         } else {
             motorVertical.setPower(0);
-        }
+        }*/
         if (gamepad2.x) {
             motorHorizontal.setPower(1);
         } else if (gamepad2.b) {
@@ -114,16 +113,16 @@ public class BreakoutDriveOp extends OpMode {
             motorHorizontal.setPower(0);
         }
         if (leftBumper) {
-            motorSweeper.setPower(-1);
+            motorSweeper.setPower(-0.5);
         } else if (rightBumper) {
-            motorSweeper.setPower(1);
+            motorSweeper.setPower(0.5);
         } else {
             motorSweeper.setPower(0);
         }
 
         //Set the servos
        // servoA.setPosition(leftStick2y);
-       // servoB.setPosition(rightStick1y); */
+        // servoB.setPosition(rightStick1y);
 
         //Telemetry
         telemetry.addData("Left Stick X 1", leftStick1x);
