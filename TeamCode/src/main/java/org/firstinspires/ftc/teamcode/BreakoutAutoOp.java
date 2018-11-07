@@ -203,6 +203,7 @@ public class BreakoutAutoOp extends OpMode {
 //                startTime.reset();
 //                break;
 //        }
+        blueRover();
 
     }
 
