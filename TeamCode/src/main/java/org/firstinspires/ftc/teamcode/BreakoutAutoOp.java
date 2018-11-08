@@ -33,23 +33,23 @@ public class BreakoutAutoOp extends OpMode {
     public void init() {
 
         //Broken out servo class
-        servoA.set(hardwareMap.servo.get("servoA"));
-        servoB.set(hardwareMap.servo.get("servoB"));
+//        servoA.set(hardwareMap.servo.get("servoA"));
+//        servoB.set(hardwareMap.servo.get("servoB"));
         servoA.setDirection(SERVO_F);
         servoB.setDirection(SERVO_R);
         servoA.setPosition(0);
         servoB.setPosition(0);
 
         //Broken out motor class
-        motorA.set(hardwareMap.dcMotor.get("motorA"));
-        motorB.set(hardwareMap.dcMotor.get("motorB"));
+//        motorA.set(hardwareMap.dcMotor.get("motorA"));
+//        motorB.set(hardwareMap.dcMotor.get("motorB"));
         motorA.setDirection(MOTOR_F);
         motorB.setDirection(MOTOR_R);
         motorA.setPower(0);
         motorB.setPower(0);
 
         //Broken out Gyro class
-        gyroA.set(hardwareMap.get(gyroA.IMU, "gyroA"));
+//        gyroA.set(hardwareMap.get(gyroA.IMU, "gyroA"));
         telemetry.addLine("Calibrating: DO NOT MOVE!");
         gyroA.calibrate();
         telemetry.clearAll();
