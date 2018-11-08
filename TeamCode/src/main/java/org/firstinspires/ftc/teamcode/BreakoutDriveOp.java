@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import static org.firstinspires.ftc.teamcode.BreakoutMotor.Direction.MOTOR_F;
+import static org.firstinspires.ftc.teamcode.BreakoutMotor.Direction.MOTOR_R;
 
 /**
  * This class is used for the main game to drive the robot using the controllers.
@@ -53,8 +54,8 @@ public class BreakoutDriveOp extends OpMode {
         motorSweeper.set(hardwareMap.dcMotor.get("motorSweeper"));
         motorHorizontal.set(hardwareMap.dcMotor.get("motorHorizontal"));
         motorSweeperArm.set(hardwareMap.dcMotor.get("motorSweeperArm"));
-        motorLeft.setDirection(MOTOR_F);
-        motorRight.setDirection(MOTOR_F);
+        motorLeft.setDirection(MOTOR_R);
+        motorRight.setDirection(MOTOR_R);
         motorLeft.setPower(0);
         motorRight.setPower(0);
 
