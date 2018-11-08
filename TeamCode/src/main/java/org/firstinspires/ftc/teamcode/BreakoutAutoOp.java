@@ -57,7 +57,7 @@ public class BreakoutAutoOp extends OpMode {
         double derivative = (error - last_error) / delta_time;
         last_error = error;
         double var = (error * 0.33) + (integral * 0) + (derivative * 0);
-        double out = 1-var*0.01
+        double out = 1-var*0.01;
         telemetry.addData("angle", gyroA.getOrient().firstAngle);
         telemetry.addData("delta_time", delta_time);
         telemetry.addData("error", error);
