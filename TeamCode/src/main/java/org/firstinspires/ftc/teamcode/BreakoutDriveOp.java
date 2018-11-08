@@ -96,7 +96,7 @@ public class BreakoutDriveOp extends OpMode {
         boolean leftBumper = gamepad2.left_bumper;
         boolean rightBumper = gamepad2.right_bumper;
 
-        //Move the motors
+        //Move the motors//
         motorLeft.setPower(-leftStick1y);
         motorRight.setPower(-rightStick1y);
         if (gamepad2.y) {
