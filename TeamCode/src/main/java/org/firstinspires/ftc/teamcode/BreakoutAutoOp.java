@@ -16,6 +16,8 @@ import java.util.concurrent.TimeUnit;
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
 import static org.firstinspires.ftc.teamcode.BreakoutMotor.Direction.MOTOR_R;
 import static org.firstinspires.ftc.teamcode.BreakoutMotor.Direction.MOTOR_F;
+import static org.firstinspires.ftc.teamcode.BreakoutServo.Direction.SERVO_F;
+import static org.firstinspires.ftc.teamcode.BreakoutServo.Direction.SERVO_R;
 
 /**
  * This class is used for the Autonomous segment of the game. No controllers are to be used.
@@ -33,8 +35,9 @@ public class BreakoutAutoOp extends OpMode {
     private String trackableName = "";
     double i = 0;
 
-
     private List<VuforiaTrackable> allTrackables = new ArrayList<>();
+    private List<BreakoutMotor> allMotors = new ArrayList<>();
+    private List<BreakoutServo> allServos = new ArrayList<>();
 
     private BreakoutMotor motorLeft = new BreakoutMotor();
     private BreakoutMotor motorRight = new BreakoutMotor();
@@ -44,11 +47,54 @@ public class BreakoutAutoOp extends OpMode {
 
     private BreakoutREVGyro gyroA = new BreakoutREVGyro();
 
-    private ElapsedTime totalTime = new ElapsedTime();
     private ElapsedTime startTime = new ElapsedTime();
 
     private double integral;
     private double last_error;
+
+    private void allSet(List<BreakoutMotor> allMotors, int job) {
+        if(job == 0) {
+            for (int i = 0; i < allMotors.size(); i++) {
+                BreakoutMotor motor = allMotors.get(i);
+                motor.setPower(0);
+            }
+        } else if(job == 1) {
+            for (int i = 0; i < allMotors.size(); i++) {
+                BreakoutMotor motor = allMotors.get(i);
+                motor.setPower(1);
+            }
+        } else if(job == 2) {
+            for (int i = 0; i < allMotors.size(); i++) {
+                BreakoutMotor motor = allMotors.get(i);
+                motor.setDirection(MOTOR_F);
+            }
+        } else if(job == 3) {
+            for (int i = 0; i < allMotors.size(); i++) {
+                BreakoutMotor motor = allMotors.get(i);
+                motor.setDirection(MOTOR_R);
+            }
+        } else if(job == 4) {
+            for (int i = 0; i < allServos.size(); i++) {
+                BreakoutServo servo = allServos.get(i);
+                servo.setPosition(0);
+            }
+        } else if(job == 5) {
+            for (int i = 0; i < allServos.size(); i++) {
+                BreakoutServo servo = allServos.get(i);
+                servo.setPosition(1);
+            }
+        } else if(job == 6) {
+            for (int i = 0; i < allServos.size(); i++) {
+                BreakoutServo servo = allServos.get(i);
+                servo.setDirection(SERVO_F);
+            }
+        } else if(job == 7) {
+            for (int i = 0; i < allServos.size(); i++) {
+                BreakoutServo servo = allServos.get(i);
+                servo.setDirection(SERVO_R);
+            }
+        }
+    }
 
     private double pid(double cenLinAng) {
         double delta_time = startTime.now(TimeUnit.MILLISECONDS);
@@ -68,44 +114,6 @@ public class BreakoutAutoOp extends OpMode {
         return out;
     }
 
-    @Override
-    public void init() {
-
-        totalTime.reset();
-        //Broken out motorSweeper class
-        motorLeft.set(hardwareMap.dcMotor.get("motorLeft"));
-        motorRight.set(hardwareMap.dcMotor.get("motorRight"));
-        motorSweeper.set(hardwareMap.dcMotor.get("motorSweeper"));
-        motorSweeperArm.set(hardwareMap.dcMotor.get("motorSweeperArm"));
-        motorHorizontal.set(hardwareMap.dcMotor.get("motorHorizontal"));
-        motorLeft.setDirection(MOTOR_R);
-        motorRight.setDirection(MOTOR_R);
-        motorSweeper.setDirection(MOTOR_F);
-        motorSweeperArm.setDirection(MOTOR_F);
-        motorHorizontal.setDirection(MOTOR_F);
-        motorLeft.setPower(0);
-        motorRight.setPower(0);
-        motorSweeper.setPower(0);
-        motorSweeperArm.setPower(0);
-        motorHorizontal.setPower(0);
-
-        //Broken out Gyro class
-        gyroA.set(hardwareMap.get(gyroA.IMU, "gyroA"));
-        telemetry.addLine("Calibrating: DO NOT MOVE!");
-        gyroA.calibrate();
-        telemetry.clearAll();
-
-    }
-
-    @Override
-    public void start() {
-        startTime.reset();
-        motorLeft.setPower(0);
-        motorRight.setPower(0);
-        motorSweeper.setPower(0);
-        motorSweeperArm.setPower(0);
-    }
-
     private void blueRover() {
         double centerAng = 0;
         if(gyroA.getOrient().firstAngle <= centerAng) {
@@ -119,10 +127,17 @@ public class BreakoutAutoOp extends OpMode {
     }
 
     private void redFootprint() {
-        motorLeft.setPower(0);
-        motorRight.setPower(0);
-        telemetry.addLine("vel" + gyroA.getVel());
-        telemetry.update();
+        while(startTime.milliseconds() < 1700) {
+            motorLeft.setPower(1);
+            motorRight.setPower(1);
+        }
+        while(startTime.now(TimeUnit.MILLISECONDS) < 2700) {
+            motorLeft.setPower(0);
+            motorRight.setPower(0);
+            motorSweeperArm.setPower(1);
+            motorSweeper.setPower(1);
+        }
+        stop();
     }
 
     private void frontCraters() {
@@ -140,6 +155,42 @@ public class BreakoutAutoOp extends OpMode {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void init() {
+
+        //Broken out motorSweeper class
+        motorLeft.set(hardwareMap.dcMotor.get("motorLeft"));
+        motorRight.set(hardwareMap.dcMotor.get("motorRight"));
+        motorSweeper.set(hardwareMap.dcMotor.get("motorSweeper"));
+        motorSweeperArm.set(hardwareMap.dcMotor.get("motorSweeperArm"));
+        motorHorizontal.set(hardwareMap.dcMotor.get("motorHorizontal"));
+        motorLeft.setDirection(MOTOR_R);
+        motorRight.setDirection(MOTOR_R);
+        motorSweeper.setDirection(MOTOR_F);
+        motorSweeperArm.setDirection(MOTOR_F);
+        motorHorizontal.setDirection(MOTOR_F);
+        motorLeft.setPower(0);
+        motorRight.setPower(0);
+        motorSweeper.setPower(0);
+        motorSweeperArm.setPower(0);
+        motorHorizontal.setPower(0);
+        allMotors.add(motorLeft); allMotors.add(motorRight); allMotors.add(motorSweeper); allMotors.add(motorSweeperArm);
+
+        //Broken out Gyro class
+        gyroA.set(hardwareMap.get(gyroA.IMU, "gyroA"));
+        telemetry.addLine("Calibrating: DO NOT MOVE!");
+        telemetry.update();
+        gyroA.calibrate();
+        telemetry.clearAll();
+        telemetry.update();
+    }
+
+    @Override
+    public void start() {
+        allSet(allMotors, 0);
+    }
+
 
     @Override
     public void loop() {
@@ -167,7 +218,6 @@ public class BreakoutAutoOp extends OpMode {
             allTrackables.addAll(targetsRoverRuckus);
 
             targetsRoverRuckus.activate();
-
         }
 
 //        if (!found) {
@@ -203,16 +253,13 @@ public class BreakoutAutoOp extends OpMode {
 //                startTime.reset();
 //                break;
 //        }
-        blueRover();
+        startTime.reset();
+        redFootprint();
 
     }
 
     @Override
     public void stop() {
-        motorLeft.setPower(0);
-        motorRight.setPower(0);
-        motorSweeper.setPower(0);
-        motorSweeperArm.setPower(0);
-        motorHorizontal.setPower(0);
+        allSet(allMotors, 0);
     }
 }
