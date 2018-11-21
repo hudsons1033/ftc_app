@@ -100,9 +100,9 @@ public class BreakoutDriveOp extends OpMode {
         motorLeft.setPower(-leftStick1y);
         motorRight.setPower(-rightStick1y);
         if (gamepad2.y) {
-            motorSweeperArm.setPower(1);
-        } else if (gamepad2.a) {
             motorSweeperArm.setPower(-1);
+        } else if (gamepad2.a) {
+            motorSweeperArm.setPower(1);
         } else {
             motorSweeperArm.setPower(0);
         }
