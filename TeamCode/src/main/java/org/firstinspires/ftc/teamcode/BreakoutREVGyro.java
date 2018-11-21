@@ -14,9 +14,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 public class BreakoutREVGyro {
 
     //Define objects
-    public Class<BNO055IMU> IMU = BNO055IMU.class;
+    Class<BNO055IMU> IMU = BNO055IMU.class;
     private BNO055IMU imu;
-    BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+    private BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
 
     //State for telemetry
     Orientation angles;
@@ -33,6 +33,8 @@ public class BreakoutREVGyro {
     void calibrate() {
         parameters.loggingEnabled = true;
         parameters.loggingTag = "IMU";
+        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
         imu.initialize(parameters);
     }
 
@@ -40,19 +42,19 @@ public class BreakoutREVGyro {
         return !imu.isGyroCalibrated();
     }
 
-    public Acceleration getAccel() {
+    Acceleration getAccel() {
         return imu.getAcceleration();
     }
 
-    public Orientation getOrient() {
+    Orientation getOrient() {
         return imu.getAngularOrientation();
     }
 
-    public Velocity getVel() {
+    Velocity getVel() {
         return imu.getVelocity();
     }
 
-    public Position getPos() {
+    Position getPos() {
         return imu.getPosition();
     }
 
