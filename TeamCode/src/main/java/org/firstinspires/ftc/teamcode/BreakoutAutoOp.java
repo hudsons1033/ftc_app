@@ -96,14 +96,35 @@ public class BreakoutAutoOp extends OpMode {
         }
     }
 
+    double Kp = 0.8;
+    double Ki = 0.001;
+    double Kd = 0.2;
+
     private double pid(double cenLinAng) {
         double delta_time = startTime.now(TimeUnit.MILLISECONDS);
         double error = cenLinAng - gyroA.getOrient().firstAngle;
         integral += error * delta_time;
         double derivative = (error - last_error) / delta_time;
         last_error = error;
-        double var = (error * 0.33) + (integral * 0) + (derivative * 0);
-        double out = 1-var*0.01;
+        double var = (error * Kp) + (integral * Ki) + (derivative * Kd);
+        double out = 1-var;
+        telemetry.addData("angle", gyroA.getOrient().firstAngle);
+        telemetry.addData("delta_time", delta_time);
+        telemetry.addData("error", error);
+        telemetry.addData("accumulation of error", integral);
+        telemetry.addData("derivative of error", derivative);
+        telemetry.addData("last error", last_error);
+        telemetry.addData("out", out);
+        return out;
+    }
+    private double pid2(double cenLinAng) {
+        double delta_time = startTime.now(TimeUnit.MILLISECONDS);
+        double error = cenLinAng + gyroA.getOrient().firstAngle;
+        integral += error * delta_time;
+        double derivative = (error - last_error) / delta_time;
+        last_error = error;
+        double var = (error * Kp) + (integral * Ki) + (derivative * Kd);
+        double out = 1-var;
         telemetry.addData("angle", gyroA.getOrient().firstAngle);
         telemetry.addData("delta_time", delta_time);
         telemetry.addData("error", error);
@@ -117,11 +138,11 @@ public class BreakoutAutoOp extends OpMode {
     private void blueRover() {
         double centerAng = 0;
         if(gyroA.getOrient().firstAngle <= centerAng) {
-            motorLeft.setPower(Math.max(0, Math.min(1, pid(centerAng))));
-            motorRight.setPower(1);
+            motorLeft.setPower(Math.max(0, Math.min(1, pid(centerAng)))+0.5);
+            motorRight.setPower(0.5);
         } else {
-            motorLeft.setPower(1);
-            motorRight.setPower(Math.max(0, Math.min(1, pid(centerAng))));
+            motorLeft.setPower(0.5);
+            motorRight.setPower(Math.max(0, Math.min(1, pid2(centerAng)))+0.5);
         }
         telemetry.update();
     }
@@ -254,7 +275,7 @@ public class BreakoutAutoOp extends OpMode {
 //                break;
 //        }
         startTime.reset();
-        redFootprint();
+        blueRover();
 
     }
 
