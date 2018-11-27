@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 import java.util.ArrayList;
@@ -183,7 +184,7 @@ public class BreakoutAutoOp extends OpMode {
         motorHorizontal.setDirection(MOTOR_F); //?
         motorHorizontalBack.setDirection(MOTOR_R); //?
         allMotors.add(motorLeft); allMotors.add(motorRight); allMotors.add(motorSweeper); allMotors.add(motorSweeperArm); allMotors.add(motorHorizontal); allMotors.add(motorHorizontalBack);
-        allSet(allMotors, 0);
+        allSet(allMotors, 1);
 
         //Broken out Gyro class
         gyroA.set(hardwareMap.get(gyroA.IMU, "gyroA"));
@@ -229,45 +230,42 @@ public class BreakoutAutoOp extends OpMode {
             startTime.reset();
         }
 
-//        if (!found) {
-//            motorLeft.setPower(1);
-//            motorRight.setPower(1);
-////            motorC.setPower(1);
-////            motorSweeperArm.setPower(1);
-//            for (VuforiaTrackable trackable : allTrackables) {
-//                if (((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible()) {
-//                    this.trackableName = trackable.getName();
-//                    telemetry.addData("Visible Target", trackable.getName());
-//                    found = true;
-//                    startTime.reset();
-//                    break;
-//                }
-//            }
-//        }
+        if (!found) {
+            motorLeft.setPower(1);
+            motorRight.setPower(-1);
+            for (VuforiaTrackable trackable : allTrackables) {
+                if (((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible()) {
+                    this.trackableName = trackable.getName();
+                    telemetry.addData("Visible Target", trackable.getName());
+                    found = true;
+                    startTime.reset();
+                    break;
+                }
+            }
+        }
 
-//        switch (trackableName) {
-//            case "Blue-Rover":
-//                blueRover();
-//                break;
-//            case "Red-Footprint":
-//                redFootprint();
-//                break;
-//            case "Front-Craters":
-//                frontCraters();
-//                break;
-//            case "Back-Space":
-//                backSpace();
-//                break;
-//            case "":
-//                startTime.reset();
-//                break;
-//        }
-        blueRover();
+        switch (trackableName) {
+            case "Blue-Rover":
+                blueRover();
+                break;
+            case "Red-Footprint":
+                redFootprint();
+                break;
+            case "Front-Craters":
+                frontCraters();
+                break;
+            case "Back-Space":
+                backSpace();
+                break;
+            case "":
+                startTime.reset();
+                break;
+        }
 
     }
 
     @Override
     public void stop() {
-        allSet(allMotors, 0);
+        allSet(allMotors, 1);
     }
 }
