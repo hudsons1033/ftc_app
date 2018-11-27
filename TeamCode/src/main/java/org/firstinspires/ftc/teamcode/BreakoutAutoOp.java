@@ -44,6 +44,7 @@ public class BreakoutAutoOp extends OpMode {
     private BreakoutMotor motorSweeper = new BreakoutMotor();
     private BreakoutMotor motorSweeperArm = new BreakoutMotor();
     private BreakoutMotor motorHorizontal = new BreakoutMotor();
+    private BreakoutMotor motorHorizontalBack = new BreakoutMotor();
 
     private BreakoutREVGyro gyroA = new BreakoutREVGyro();
 
@@ -52,99 +53,87 @@ public class BreakoutAutoOp extends OpMode {
     private double integral;
     private double last_error;
 
-    private void allSet(List<BreakoutMotor> allMotors, int job) {
-        if(job == 0) {
-            for (int i = 0; i < allMotors.size(); i++) {
-                BreakoutMotor motor = allMotors.get(i);
-                motor.setPower(0);
-            }
-        } else if(job == 1) {
-            for (int i = 0; i < allMotors.size(); i++) {
-                BreakoutMotor motor = allMotors.get(i);
-                motor.setPower(1);
-            }
-        } else if(job == 2) {
-            for (int i = 0; i < allMotors.size(); i++) {
-                BreakoutMotor motor = allMotors.get(i);
-                motor.setDirection(MOTOR_F);
-            }
-        } else if(job == 3) {
-            for (int i = 0; i < allMotors.size(); i++) {
-                BreakoutMotor motor = allMotors.get(i);
-                motor.setDirection(MOTOR_R);
-            }
-        } else if(job == 4) {
-            for (int i = 0; i < allServos.size(); i++) {
-                BreakoutServo servo = allServos.get(i);
-                servo.setPosition(0);
-            }
-        } else if(job == 5) {
-            for (int i = 0; i < allServos.size(); i++) {
-                BreakoutServo servo = allServos.get(i);
-                servo.setPosition(1);
-            }
-        } else if(job == 6) {
-            for (int i = 0; i < allServos.size(); i++) {
-                BreakoutServo servo = allServos.get(i);
-                servo.setDirection(SERVO_F);
-            }
-        } else if(job == 7) {
-            for (int i = 0; i < allServos.size(); i++) {
-                BreakoutServo servo = allServos.get(i);
-                servo.setDirection(SERVO_R);
-            }
+    private void allSet(List<BreakoutMotor> motors, int job) {
+        for (BreakoutMotor motor : motors) {
+            setThing(motor, job);
         }
     }
 
-    double Kp = 0.8;
-    double Ki = 0.001;
-    double Kd = 0.2;
+    private void setThing(BreakoutMotor motor, int job) {
+        if (job == 1) {
+            motor.setPower(0);
+        } else if (job == 2) {
+            motor.setDirection(MOTOR_F);
+        }
+    }
 
-    private double pid(double cenLinAng) {
-        double delta_time = startTime.now(TimeUnit.MILLISECONDS);
-        double error = cenLinAng - gyroA.getOrient().firstAngle;
-        integral += error * delta_time;
-        double derivative = (error - last_error) / delta_time;
-        last_error = error;
-        double var = (error * Kp) + (integral * Ki) + (derivative * Kd);
-        double out = 1-var;
-        telemetry.addData("angle", gyroA.getOrient().firstAngle);
-        telemetry.addData("delta_time", delta_time);
-        telemetry.addData("error", error);
-        telemetry.addData("accumulation of error", integral);
-        telemetry.addData("derivative of error", derivative);
-        telemetry.addData("last error", last_error);
-        telemetry.addData("out", out);
-        return out;
-    }
-    private double pid2(double cenLinAng) {
-        double delta_time = startTime.now(TimeUnit.MILLISECONDS);
-        double error = cenLinAng + gyroA.getOrient().firstAngle;
-        integral += error * delta_time;
-        double derivative = (error - last_error) / delta_time;
-        last_error = error;
-        double var = (error * Kp) + (integral * Ki) + (derivative * Kd);
-        double out = 1-var;
-        telemetry.addData("angle", gyroA.getOrient().firstAngle);
-        telemetry.addData("delta_time", delta_time);
-        telemetry.addData("error", error);
-        telemetry.addData("accumulation of error", integral);
-        telemetry.addData("derivative of error", derivative);
-        telemetry.addData("last error", last_error);
-        telemetry.addData("out", out);
-        return out;
-    }
+//    double Kp = 0.5;
+//    double Ki = 0.0;
+//    double Kd = 0.0;
+//
+//    private double pid(double cenLinAng) {
+//        double delta_time = startTime.now(TimeUnit.MILLISECONDS);
+//        double error = cenLinAng - gyroA.getOrient().firstAngle;
+//        integral += error * delta_time;
+//        double derivative = (error - last_error) / delta_time;
+//        last_error = error;
+//        double var = (error * Kp) + (integral * Ki) + (derivative * Kd);
+//        double out = 1-var;
+//        telemetry.addData("angle", gyroA.getOrient().firstAngle);
+//        telemetry.addData("delta_time", delta_time);
+//        telemetry.addData("error", error);
+//        telemetry.addData("accumulation of error", integral);
+//        telemetry.addData("derivative of error", derivative);
+//        telemetry.addData("last error", last_error);
+//        telemetry.addData("out", out);
+//        return out;
+//    }
+//    private double pid2(double cenLinAng) {
+//        double delta_time = startTime.now(TimeUnit.MILLISECONDS);
+//        double error = cenLinAng + gyroA.getOrient().firstAngle;
+//        integral += error * delta_time;
+//        double derivative = (error - last_error) / delta_time;
+//        last_error = error;
+//        double var = (error * Kp) + (integral * Ki) + (derivative * Kd);
+//        double out = 1-var;
+//        telemetry.addData("angle", gyroA.getOrient().firstAngle);
+//        telemetry.addData("delta_time", delta_time);
+//        telemetry.addData("error", error);
+//        telemetry.addData("accumulation of error", integral);
+//        telemetry.addData("derivative of error", derivative);
+//        telemetry.addData("last error", last_error);
+//        telemetry.addData("out", out);
+//        return out;
+//    }
+//
+//    private void blueRover() {
+//        double centerAng = 0;
+//        if(gyroA.getOrient().firstAngle <= centerAng) {
+//            motorLeft.setPower(Math.max(0, Math.min(1, pid(centerAng)))+0.5);
+//            motorRight.setPower(0.5);
+//        } else {
+//            motorLeft.setPower(0.5);
+//            motorRight.setPower(Math.max(0, Math.min(1, pid2(centerAng)))+0.5);
+//        }
+//        telemetry.update();
+//    }
 
     private void blueRover() {
-        double centerAng = 0;
-        if(gyroA.getOrient().firstAngle <= centerAng) {
-            motorLeft.setPower(Math.max(0, Math.min(1, pid(centerAng)))+0.5);
-            motorRight.setPower(0.5);
-        } else {
-            motorLeft.setPower(0.5);
-            motorRight.setPower(Math.max(0, Math.min(1, pid2(centerAng)))+0.5);
+        while(startTime.milliseconds() < 1700) {
+            motorLeft.setPower(1);
+            motorRight.setPower(1);
         }
-        telemetry.update();
+        motorLeft.setPower(0);
+        motorRight.setPower(0);
+        while(startTime.milliseconds() < 2000) {
+            motorSweeperArm.setPower(1);
+        }
+        motorSweeperArm.setPower(0);
+        while(startTime.milliseconds() < 2500) {
+            motorSweeper.setPower(-1);
+        }
+        motorSweeper.setPower(0);
+
     }
 
     private void redFootprint() {
@@ -186,17 +175,15 @@ public class BreakoutAutoOp extends OpMode {
         motorSweeper.set(hardwareMap.dcMotor.get("motorSweeper"));
         motorSweeperArm.set(hardwareMap.dcMotor.get("motorSweeperArm"));
         motorHorizontal.set(hardwareMap.dcMotor.get("motorHorizontal"));
+        motorHorizontalBack.set(hardwareMap.dcMotor.get("motorHorizontalBack"));
         motorLeft.setDirection(MOTOR_R);
         motorRight.setDirection(MOTOR_R);
         motorSweeper.setDirection(MOTOR_F);
         motorSweeperArm.setDirection(MOTOR_F);
-        motorHorizontal.setDirection(MOTOR_F);
-        motorLeft.setPower(0);
-        motorRight.setPower(0);
-        motorSweeper.setPower(0);
-        motorSweeperArm.setPower(0);
-        motorHorizontal.setPower(0);
-        allMotors.add(motorLeft); allMotors.add(motorRight); allMotors.add(motorSweeper); allMotors.add(motorSweeperArm);
+        motorHorizontal.setDirection(MOTOR_F); //?
+        motorHorizontalBack.setDirection(MOTOR_R); //?
+        allMotors.add(motorLeft); allMotors.add(motorRight); allMotors.add(motorSweeper); allMotors.add(motorSweeperArm); allMotors.add(motorHorizontal); allMotors.add(motorHorizontalBack);
+        allSet(allMotors, 0);
 
         //Broken out Gyro class
         gyroA.set(hardwareMap.get(gyroA.IMU, "gyroA"));
@@ -209,7 +196,7 @@ public class BreakoutAutoOp extends OpMode {
 
     @Override
     public void start() {
-        allSet(allMotors, 0);
+        allSet(allMotors, 1);
     }
 
 
@@ -239,6 +226,7 @@ public class BreakoutAutoOp extends OpMode {
             allTrackables.addAll(targetsRoverRuckus);
 
             targetsRoverRuckus.activate();
+            startTime.reset();
         }
 
 //        if (!found) {
@@ -274,7 +262,6 @@ public class BreakoutAutoOp extends OpMode {
 //                startTime.reset();
 //                break;
 //        }
-        startTime.reset();
         blueRover();
 
     }
