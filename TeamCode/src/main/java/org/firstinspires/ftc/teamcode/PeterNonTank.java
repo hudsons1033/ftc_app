@@ -101,13 +101,31 @@ public class PeterNonTank extends OpMode {
         boolean rightBumper = gamepad2.right_bumper;
 
         //Move the motors//
+//        float leftRightDirection = (float) (rightStick1x * 0.5);
+//        if (leftRightDirection <= 0) {
+//            motorLeft.setPower((0.5 * -leftStick1y) + leftRightDirection);
+//            motorRight.setPower((0.5 * -leftStick1y) - leftRightDirection);
+//        } else {
+//            motorLeft.setPower((0.5 * -leftStick1y) - leftRightDirection);
+//            motorRight.setPower((0.5 * -leftStick1y) + leftRightDirection);
+//        }
+        // Peter, I think the code would be better something like this...we can work on the names,
+        // but it at least explains what is going on.
+
+        // I do see where if you use the power all the way forward or all the way backward, and use
+        // the left/right all the way one way or the other, the speed of one motor is 0 and the other
+        // motor is -1/+1, so it basically spins in a circle...not sure that's what you intended.
+
+        // I think we can get this figured out, we should probably discuss what it was you were
+        // trying to do with it
         float leftRightDirection = (float) (rightStick1x * 0.5);
+        double reversePowerStickAndMakeItHalf = 0.5 * -leftStick1y;
         if (leftRightDirection <= 0) {
-            motorLeft.setPower((0.5 * -leftStick1y) + leftRightDirection);
-            motorRight.setPower((0.5 * -leftStick1y) - leftRightDirection);
+            motorLeft.setPower(reversePowerStickAndMakeItHalf + leftRightDirection);
+            motorRight.setPower(reversePowerStickAndMakeItHalf - leftRightDirection);
         } else {
-            motorLeft.setPower((0.5 * -leftStick1y) - leftRightDirection);
-            motorRight.setPower((0.5 * -leftStick1y) + leftRightDirection);
+            motorLeft.setPower(reversePowerStickAndMakeItHalf - leftRightDirection);
+            motorRight.setPower(reversePowerStickAndMakeItHalf + leftRightDirection);
         }
         if (gamepad2.y) {
             motorSweeperArm.setPower(-1);
