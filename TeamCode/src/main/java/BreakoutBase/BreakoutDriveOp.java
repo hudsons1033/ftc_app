@@ -1,8 +1,8 @@
 package BreakoutBase;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
 
 import static BreakoutBase.BreakoutMotor.Direction.MOTOR_F;
 import static BreakoutBase.BreakoutMotor.Direction.MOTOR_R;
@@ -85,8 +85,16 @@ public class BreakoutDriveOp extends OpMode {
         float rightStick2y = gamepad2.right_stick_y;
 
         //Move the motors
-        motorA.setPower(-leftStick1y);
-        motorB.setPower(-rightStick1y);
+        float power = Range.clip(rightStick1x, -1, 1);
+
+        if (-rightStick1x >= 0) {
+            motorA.setPower((0.5 * -leftStick1y) + power);
+            motorB.setPower((0.5 * -leftStick1y) - power);
+        } else {
+            motorA.setPower((0.5 * -leftStick1y) - power);
+            motorB.setPower((0.5 * -leftStick1y) + power);
+        }
+
 
         //Set the servos
         servoA.setPosition(leftStick2y);
