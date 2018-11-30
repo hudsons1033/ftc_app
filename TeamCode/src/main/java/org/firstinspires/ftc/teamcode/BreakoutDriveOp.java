@@ -133,6 +133,8 @@ public class BreakoutDriveOp extends OpMode {
         } else {
             motorSweeper.setPower(0);
         }
+
+        // TODO Carter, these are the same pad controls that control the motorSweeperArm above
         if (gamepad2.a) {
             motorVertical.setPower(-1);
             motorVertical2.setPower(-1);
@@ -144,6 +146,15 @@ public class BreakoutDriveOp extends OpMode {
             motorVertical2.setPower(0);
 
         }
+        // TODO an alternative to above
+        double verticalPower = 0;
+        if (gamepad2.a) {
+            verticalPower = -1;
+        } else if (gamepad2.y) {
+            verticalPower = 1;
+        }
+        motorVertical.setPower(verticalPower);
+        motorVertical2.setPower(verticalPower);
 
         //Set the servos
        // servoA.setPosition(leftStick2y);
