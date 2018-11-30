@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.Range;
 
 import static org.firstinspires.ftc.teamcode.BreakoutMotor.Direction.MOTOR_F;
 import static org.firstinspires.ftc.teamcode.BreakoutMotor.Direction.MOTOR_R;
@@ -101,8 +102,15 @@ public class BreakoutDriveOp extends OpMode {
         boolean rightBumper = gamepad2.right_bumper;
 
         //Move the motors//
-        motorLeft.setPower(-leftStick1y);
-        motorRight.setPower(-rightStick1y);
+        float power = Range.clip(rightStick1x, -1, 1);
+
+        if (-rightStick1x >= 0) {
+            motorLeft.setPower((0.5 * -leftStick1y) + power);
+            motorRight.setPower((0.5 * -leftStick1y) - power);
+        } else {
+            motorLeft.setPower((0.5 * -leftStick1y) - power);
+            motorRight.setPower((0.5 * -leftStick1y) + power);
+        }
         if (gamepad2.y) {
             motorSweeperArm.setPower(-1);
         } else if (gamepad2.a) {
