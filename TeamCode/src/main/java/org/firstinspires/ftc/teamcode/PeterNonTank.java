@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.Range;
 
 import static org.firstinspires.ftc.teamcode.BreakoutMotor.Direction.MOTOR_F;
 import static org.firstinspires.ftc.teamcode.BreakoutMotor.Direction.MOTOR_R;
@@ -9,9 +10,9 @@ import static org.firstinspires.ftc.teamcode.BreakoutMotor.Direction.MOTOR_R;
 /**
  * This class is used for the main game to drive the robot using the controllers.
  **/
-@TeleOp(name = "Drive", group = "Pushbot")
+@TeleOp(name = "DriveNonTank", group = "Pushbot")
 
-public class BreakoutDriveOp extends OpMode {
+public class PeterNonTank extends OpMode {
 
     //Servo Breakout code definition
    /* private BreakoutServo servoA = new BreakoutServo();
@@ -101,8 +102,15 @@ public class BreakoutDriveOp extends OpMode {
         boolean rightBumper = gamepad2.right_bumper;
 
         //Move the motors//
-        motorLeft.setPower(-leftStick1y);
-        motorRight.setPower(-rightStick1y);
+        float power = Range.clip(rightStick1x, -1, 1);
+
+        if (-rightStick1x >= 0) {
+            motorLeft.setPower((0.5 * -leftStick1y) + power);
+            motorRight.setPower((0.5 * -leftStick1y) - power);
+        } else {
+            motorLeft.setPower((0.5 * -leftStick1y) - power);
+            motorRight.setPower((0.5 * -leftStick1y) + power);
+        }
         if (gamepad2.y) {
             motorSweeperArm.setPower(-1);
         } else if (gamepad2.a) {
@@ -129,7 +137,7 @@ public class BreakoutDriveOp extends OpMode {
         }
 
         //Set the servos
-       // servoA.setPosition(leftStick2y);
+        // servoA.setPosition(leftStick2y);
         // servoB.setPosition(rightStick1y);
 
         //Telemetry
