@@ -106,6 +106,7 @@ public class BreakoutDriveOp extends OpMode {
         boolean leftBumper = gamepad2.left_bumper;
         boolean rightBumper = gamepad2.right_bumper;
 
+
         //Move the motors//
         motorLeft.setPower(-leftStick1y);
         motorRight.setPower(-rightStick1y);
@@ -116,16 +117,14 @@ public class BreakoutDriveOp extends OpMode {
         } else {
             motorSweeperArm.setPower(0);
         }
+       double horizontalPower =0;
         if (gamepad2.x) {
-            motorHorizontal1.setPower(1);
-            motorHorizontal2.setPower(1);
+            horizontalPower = 1;
         } else if (gamepad2.b) {
-            motorHorizontal1.setPower(-1);
-            motorHorizontal2.setPower(-1);
-        } else {
-            motorHorizontal1.setPower(0);
-            motorHorizontal2.setPower(0);
+            horizontalPower = -1;
         }
+          motorHorizontal2.setPower(horizontalPower);
+          motorHorizontal1.setPower(horizontalPower);
         if (leftBumper) {
             motorSweeper.setPower(-0.5);
         } else if (rightBumper) {
@@ -134,23 +133,10 @@ public class BreakoutDriveOp extends OpMode {
             motorSweeper.setPower(0);
         }
 
-        // TODO Carter, these are the same pad controls that control the motorSweeperArm above
-        if (gamepad2.a) {
-            motorVertical.setPower(-1);
-            motorVertical2.setPower(-1);
-        } else if (gamepad2.y) {
-            motorVertical.setPower(1);
-            motorVertical2.setPower(1);
-        } else {
-            motorVertical.setPower(0);
-            motorVertical2.setPower(0);
-
-        }
-        // TODO an alternative to above
         double verticalPower = 0;
-        if (gamepad2.a) {
+        if (gamepad2.dpad_down) {
             verticalPower = -1;
-        } else if (gamepad2.y) {
+        } else if (gamepad2.dpad_up) {
             verticalPower = 1;
         }
         motorVertical.setPower(verticalPower);
