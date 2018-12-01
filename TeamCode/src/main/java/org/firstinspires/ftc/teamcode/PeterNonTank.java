@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.Range;
 
 import static org.firstinspires.ftc.teamcode.BreakoutMotor.Direction.MOTOR_F;
 import static org.firstinspires.ftc.teamcode.BreakoutMotor.Direction.MOTOR_R;
@@ -90,6 +91,8 @@ public class PeterNonTank extends OpMode {
         //Gamepad 1
         float leftStick1x = gamepad1.left_stick_x;
         float leftStick1y = gamepad1.left_stick_y;
+        float leftTrigger = gamepad1.left_trigger;
+        float rightTrigger = gamepad1.right_trigger;
         float rightStick1x = gamepad1.right_stick_x;
         float rightStick1y = gamepad1.right_stick_y;
         //Gamepad 2
@@ -101,32 +104,26 @@ public class PeterNonTank extends OpMode {
         boolean rightBumper = gamepad2.right_bumper;
 
         //Move the motors//
-//        float leftRightDirection = (float) (rightStick1x * 0.5);
-//        if (leftRightDirection <= 0) {
-//            motorLeft.setPower((0.5 * -leftStick1y) + leftRightDirection);
-//            motorRight.setPower((0.5 * -leftStick1y) - leftRightDirection);
-//        } else {
-//            motorLeft.setPower((0.5 * -leftStick1y) - leftRightDirection);
-//            motorRight.setPower((0.5 * -leftStick1y) + leftRightDirection);
-//        }
-        // Peter, I think the code would be better something like this...we can work on the names,
-        // but it at least explains what is going on.
-
-        // I do see where if you use the power all the way forward or all the way backward, and use
-        // the left/right all the way one way or the other, the speed of one motor is 0 and the other
-        // motor is -1/+1, so it basically spins in a circle...not sure that's what you intended.
-
-        // I think we can get this figured out, we should probably discuss what it was you were
-        // trying to do with it
-        float leftRightDirection = (float) (rightStick1x * 0.5);
-        double reversePowerStickAndMakeItHalf = 0.5 * -leftStick1y;
-        if (leftRightDirection <= 0) {
-            motorLeft.setPower(reversePowerStickAndMakeItHalf + leftRightDirection);
-            motorRight.setPower(reversePowerStickAndMakeItHalf - leftRightDirection);
+        float leftRightDirectionAndPower = rightStick1x;
+        float leftRightPower = Math.abs(leftRightDirectionAndPower);
+        if (leftTrigger >= rightTrigger) {
+            rightTrigger = 0;
         } else {
-            motorLeft.setPower(reversePowerStickAndMakeItHalf - leftRightDirection);
-            motorRight.setPower(reversePowerStickAndMakeItHalf + leftRightDirection);
+            leftTrigger = 0;
         }
+        float clippedLeftRightPower = (Range.clip(leftRightPower, 0, (leftTrigger < rightTrigger) ? rightTrigger : leftTrigger));
+
+        if (leftTrigger != 0 && leftRightDirectionAndPower <= 0) {
+            motorRight.setPower(leftTrigger + clippedLeftRightPower);
+        } else if (leftTrigger != 0) {
+            motorLeft.setPower(leftTrigger + clippedLeftRightPower);
+        } else if (rightTrigger != 0 && leftRightDirectionAndPower <= 0) {
+            motorRight.setPower(rightTrigger - clippedLeftRightPower);
+        } else {
+            motorLeft.setPower(rightTrigger - clippedLeftRightPower);
+        }
+
+
         if (gamepad2.y) {
             motorSweeperArm.setPower(-1);
         } else if (gamepad2.a) {
