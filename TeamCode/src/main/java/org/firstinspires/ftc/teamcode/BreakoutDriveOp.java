@@ -25,6 +25,8 @@ public class BreakoutDriveOp extends OpMode {
     private BreakoutMotor motorSweeperArm = new BreakoutMotor();
     private BreakoutMotor motorSweeper = new BreakoutMotor();
     private BreakoutMotor motorHorizontal2 = new BreakoutMotor();
+    private BreakoutMotor motorVertical = new BreakoutMotor();
+    private BreakoutMotor motorVertical2 = new BreakoutMotor();
 
     //Gyro Breakout code definition
     //private BreakoutREVGyro gyroA = new BreakoutREVGyro();
@@ -56,10 +58,14 @@ public class BreakoutDriveOp extends OpMode {
         motorHorizontal1.set(hardwareMap.dcMotor.get("motorHorizontal"));
         motorHorizontal2.set(hardwareMap.dcMotor.get("motorHorizontalBack"));
         motorSweeperArm.set(hardwareMap.dcMotor.get("motorSweeperArm"));
+        motorVertical.set(hardwareMap.dcMotor.get("motorVertical"));
+        motorVertical2.set(hardwareMap.dcMotor.get("motorVertical2"));
         motorLeft.setDirection(MOTOR_R);
         motorRight.setDirection(MOTOR_R);
         motorHorizontal1.setDirection(MOTOR_F);
         motorHorizontal2.setDirection(MOTOR_R);
+        motorVertical2.setDirection(MOTOR_R);
+        motorVertical.setDirection(MOTOR_F);
         motorLeft.setPower(0);
         motorRight.setPower(0);
 
@@ -100,6 +106,7 @@ public class BreakoutDriveOp extends OpMode {
         boolean leftBumper = gamepad2.left_bumper;
         boolean rightBumper = gamepad2.right_bumper;
 
+
         //Move the motors//
         motorLeft.setPower(-leftStick1y);
         motorRight.setPower(-rightStick1y);
@@ -110,16 +117,14 @@ public class BreakoutDriveOp extends OpMode {
         } else {
             motorSweeperArm.setPower(0);
         }
+       double horizontalPower =0;
         if (gamepad2.x) {
-            motorHorizontal1.setPower(1);
-            motorHorizontal2.setPower(1);
+            horizontalPower = 1;
         } else if (gamepad2.b) {
-            motorHorizontal1.setPower(-1);
-            motorHorizontal2.setPower(-1);
-        } else {
-            motorHorizontal1.setPower(0);
-            motorHorizontal2.setPower(0);
+            horizontalPower = -1;
         }
+          motorHorizontal2.setPower(horizontalPower);
+          motorHorizontal1.setPower(horizontalPower);
         if (leftBumper) {
             motorSweeper.setPower(-0.5);
         } else if (rightBumper) {
@@ -127,6 +132,15 @@ public class BreakoutDriveOp extends OpMode {
         } else {
             motorSweeper.setPower(0);
         }
+
+        double verticalPower = 0;
+        if (gamepad2.dpad_down) {
+            verticalPower = -1;
+        } else if (gamepad2.dpad_up) {
+            verticalPower = 1;
+        }
+        motorVertical.setPower(verticalPower);
+        motorVertical2.setPower(verticalPower);
 
         //Set the servos
        // servoA.setPosition(leftStick2y);
