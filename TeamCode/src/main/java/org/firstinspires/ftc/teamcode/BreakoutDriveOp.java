@@ -103,8 +103,7 @@ public class BreakoutDriveOp extends OpMode {
         float leftStick2y = gamepad2.left_stick_y;
         float rightStick2x = gamepad2.right_stick_x;
         float rightStick2y = gamepad2.right_stick_y;
-        boolean leftBumper = gamepad2.left_bumper;
-        boolean rightBumper = gamepad2.right_bumper;
+
 
 
         //Move the motors//
@@ -117,17 +116,16 @@ public class BreakoutDriveOp extends OpMode {
         } else {
             motorSweeperArm.setPower(0);
         }
-       double horizontalPower =0;
         if (gamepad2.x) {
-            horizontalPower = 1;
-        } else if (gamepad2.b) {
-            horizontalPower = -1;
-        }
-          motorHorizontal2.setPower(horizontalPower);
-          motorHorizontal1.setPower(horizontalPower);
-        if (leftBumper) {
+            motorHorizontal1.setPower(1);
+            motorHorizontal2.setPower(0.88);
+        } else if (gamepad2.b)
+            motorHorizontal1.setPower(-0.88);
+            motorHorizontal2.setPower(-1);
+
+        if (gamepad2.left_bumper) {
             motorSweeper.setPower(-0.5);
-        } else if (rightBumper) {
+        } else if (gamepad2.right_bumper) {
             motorSweeper.setPower(0.5);
         } else {
             motorSweeper.setPower(0);
