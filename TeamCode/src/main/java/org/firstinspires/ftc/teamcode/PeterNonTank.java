@@ -91,8 +91,11 @@ public class PeterNonTank extends OpMode {
         //Gamepad 1
         float leftStick1x = gamepad1.left_stick_x;
         float leftStick1y = gamepad1.left_stick_y;
+        // TODO Peter maybe rename the triggers to what they really are - forwardPower and reversePower
         float leftTrigger = gamepad1.left_trigger;
         float rightTrigger = gamepad1.right_trigger;
+        // TODO Peter I would recommend just renaming rightStick1x to leftRightDirectionAndPower
+        // TODO Peter actually, maybe a better name is turningDirectionAndPower
         float rightStick1x = gamepad1.right_stick_x;
         float rightStick1y = gamepad1.right_stick_y;
         //Gamepad 2
@@ -100,17 +103,23 @@ public class PeterNonTank extends OpMode {
         float leftStick2y = gamepad2.left_stick_y;
         float rightStick2x = gamepad2.right_stick_x;
         float rightStick2y = gamepad2.right_stick_y;
+
+        // TODO Peter since these are just booleans, and you only use them once, and none of the other boolean buttons are put into variables, do you need these?
         boolean leftBumper = gamepad2.left_bumper;
         boolean rightBumper = gamepad2.right_bumper;
 
         //Move the motors//
         float leftRightDirectionAndPower = rightStick1x;
+        // TODO Peter maybe rename to turningPower
         float leftRightPower = Math.abs(leftRightDirectionAndPower);
+        // TODO Peter it would probably be easier to understand if you pulled out the direction - need to make sure it's the right direction...
+        boolean turningLeft = leftRightDirectionAndPower <= 0;
         if (leftTrigger >= rightTrigger) {
             rightTrigger = 0;
         } else {
             leftTrigger = 0;
         }
+        // TODO Peter maybe rename to turningPowerLimit or something like that
         float clippedLeftRightPower = (Range.clip(leftRightPower, 0, (leftTrigger < rightTrigger) ? rightTrigger : leftTrigger));
 
         if (leftTrigger != 0 && leftRightDirectionAndPower <= 0) {
