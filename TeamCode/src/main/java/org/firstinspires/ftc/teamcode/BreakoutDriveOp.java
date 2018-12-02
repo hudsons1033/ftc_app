@@ -116,6 +116,7 @@ public class BreakoutDriveOp extends OpMode {
         } else {
             motorSweeperArm.setPower(0);
         }
+        // TODO Carter was .88 supposed to be for the vertical, or for the sweeper arm?
         if (gamepad2.x) {
             motorHorizontal1.setPower(1);
             motorHorizontal2.setPower(0.88);
