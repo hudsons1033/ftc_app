@@ -170,18 +170,18 @@ public class BreakoutAutoOp extends OpMode {
         if (startTime.milliseconds() >= 15000 && goldLoc == -1) {
             if (t) {
                 double time1 = startTime.milliseconds();
-                while (startTime.milliseconds() < 16000) {
+                while (startTime.milliseconds() < 1000+time1) {
                     motorLeft.setPower(1);
                     motorRight.setPower(1);
                 }
-                while (startTime.milliseconds() < 16500 + time1) {
+                while (startTime.milliseconds() < 1500+time1) {
                     motorLeft.setPower(0);
                     motorRight.setPower(0);
                     motorSweeperArm.setPower(1);
                 }
-                while (startTime.milliseconds() < 17000 + time1) {
+                while (startTime.milliseconds() < 2000+time1) {
                     motorSweeperArm.setPower(0);
-                    motorSweeper.setPower(-1);
+                    motorSweeper.setPower(-0.5);
                 }
                 t = false;
             }
