@@ -35,6 +35,7 @@ import static org.firstinspires.ftc.teamcode.BreakoutServo.Direction.SERVO_R;
 public class BreakoutAutoOp extends OpMode {
 
     private int goldLoc = -1;
+    private boolean t = true;
     private static final String TFOD_MODEL_ASSET = "RoverRuckus.tflite";
     private static final String LABEL_GOLD_MINERAL = "Gold Mineral";
     private static final String LABEL_SILVER_MINERAL = "Silver Mineral";
@@ -63,7 +64,7 @@ public class BreakoutAutoOp extends OpMode {
     private BreakoutMotor motorSweeper = new BreakoutMotor();
     private BreakoutMotor motorSweeperArm = new BreakoutMotor();
     private BreakoutMotor motorHorizontal = new BreakoutMotor();
-    private BreakoutMotor motorHorizontalBack = new BreakoutMotor();
+    private BreakoutMotor motorVertical = new BreakoutMotor();
 
     private BreakoutREVGyro gyroA = new BreakoutREVGyro();
 
@@ -138,35 +139,46 @@ public class BreakoutAutoOp extends OpMode {
 //    }
 
     private void blueRover(int goldLoc) {
-//        while (startTime.milliseconds() < 500) {
-//            motorLeft.setPower(1);
-//            motorRight.setPower(1);
-//        }
-        if (goldLoc == 0) {
-            motorLeft.setPower(.5);
-            motorRight.setPower(1);
-            telemetry.addData("left", null);
-        } else if (goldLoc == 1) {
-            motorLeft.setPower(1);
-            motorRight.setPower(1);
-            telemetry.addData("middle",null);
-        } else if (goldLoc == 2) {
-            motorLeft.setPower(1);
-            motorRight.setPower(.5);
-            telemetry.addData("right", null);
-        } else if (startTime.milliseconds() >= 15000 && goldLoc == -1) {
-            while (startTime.milliseconds() < 16000) {
-                motorLeft.setPower(1);
-                motorRight.setPower(1);
+        while (startTime.milliseconds() < 1000) {
+            motorVertical.setPower(-1);
+        }
+        motorVertical.setPower(0);
+        if (goldLoc != -1 && t) {
+            double time2 = startTime.milliseconds();
+            while (startTime.milliseconds() < time2+1500) {
+                if (goldLoc == 0) {
+                    motorLeft.setPower(.5);
+                    motorRight.setPower(1);
+                    telemetry.addData("left", null);
+                } else if (goldLoc == 1) {
+                    motorLeft.setPower(1);
+                    motorRight.setPower(1);
+                    telemetry.addData("middle", null);
+                } else if (goldLoc == 2) {
+                    motorLeft.setPower(1);
+                    motorRight.setPower(.5);
+                    telemetry.addData("right", null);
+                }
             }
-            while (startTime.milliseconds() < 16500+time) {
-                motorLeft.setPower(0);
-                motorRight.setPower(0);
-                motorSweeperArm.setPower(-1);
-            }
-            while (startTime.milliseconds() < 17000+time) {
-                motorSweeperArm.setPower(0);
-                motorSweeper.setPower(-1);
+            t = false;
+        }
+        if (startTime.milliseconds() >= 15000 && goldLoc == -1) {
+            if (t) {
+                double time1 = startTime.milliseconds();
+                while (startTime.milliseconds() < 16000) {
+                    motorLeft.setPower(1);
+                    motorRight.setPower(1);
+                }
+                while (startTime.milliseconds() < 16500 + time1) {
+                    motorLeft.setPower(0);
+                    motorRight.setPower(0);
+                    motorSweeperArm.setPower(1);
+                }
+                while (startTime.milliseconds() < 17000 + time1) {
+                    motorSweeperArm.setPower(0);
+                    motorSweeper.setPower(-1);
+                }
+                t = false;
             }
             allSet(allMotors, 1);
         }
@@ -271,12 +283,10 @@ public class BreakoutAutoOp extends OpMode {
 
     private void sweeperOut() {
         motorHorizontal.setPower(1);
-        motorHorizontalBack.setPower(1);
     }
 
     private void sweeperIn() {
         motorHorizontal.setPower(-1);
-        motorHorizontalBack.setPower(-1);
     }
 
     private void initTfod(VuforiaLocalizer vuforia) {
@@ -324,19 +334,17 @@ public class BreakoutAutoOp extends OpMode {
         motorSweeper.set(hardwareMap.dcMotor.get("motorSweeper"));
         motorSweeperArm.set(hardwareMap.dcMotor.get("motorSweeperArm"));
         motorHorizontal.set(hardwareMap.dcMotor.get("motorHorizontal"));
-        motorHorizontalBack.set(hardwareMap.dcMotor.get("motorHorizontalBack"));
+        motorVertical.set(hardwareMap.dcMotor.get("motorVertical"));
         motorLeft.setDirection(MOTOR_R);
         motorRight.setDirection(MOTOR_R);
         motorSweeper.setDirection(MOTOR_F);
         motorSweeperArm.setDirection(MOTOR_F);
         motorHorizontal.setDirection(MOTOR_F);
-        motorHorizontalBack.setDirection(MOTOR_R);
         allMotors.add(motorLeft);
         allMotors.add(motorRight);
         allMotors.add(motorSweeper);
         allMotors.add(motorSweeperArm);
         allMotors.add(motorHorizontal);
-        allMotors.add(motorHorizontalBack);
         allSet(allMotors, 1);
 
         //webcamName = hardwareMap.get(WebcamName.class, "Webcam");
@@ -426,6 +434,7 @@ public class BreakoutAutoOp extends OpMode {
         telemetry.addData("gold",goldMineralX);
         telemetry.addData("silver1",silverMineral1X);
         telemetry.addData("silver2",silverMineral2X);
+        telemetry.addData("time", startTime.milliseconds());
         telemetry.update();
 //        if(run) {
 //            switch (trackableName) {
