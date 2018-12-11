@@ -36,6 +36,7 @@ public class BreakoutAutoOp extends OpMode {
 
     private int goldLoc = -1;
     private boolean t = true;
+    private boolean c = true;
     private static final String TFOD_MODEL_ASSET = "RoverRuckus.tflite";
     private static final String LABEL_GOLD_MINERAL = "Gold Mineral";
     private static final String LABEL_SILVER_MINERAL = "Silver Mineral";
@@ -139,6 +140,10 @@ public class BreakoutAutoOp extends OpMode {
 //    }
 
     private void blueRover(int goldLoc) {
+        if (c) {
+            startTime.reset();
+            c = false;
+        }
         while (startTime.milliseconds() < 1000) {
             motorVertical.setPower(-1);
         }
