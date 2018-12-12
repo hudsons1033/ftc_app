@@ -15,7 +15,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
@@ -24,8 +23,6 @@ import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection.BACK;
 import static org.firstinspires.ftc.teamcode.BreakoutMotor.Direction.MOTOR_R;
 import static org.firstinspires.ftc.teamcode.BreakoutMotor.Direction.MOTOR_F;
-import static org.firstinspires.ftc.teamcode.BreakoutServo.Direction.SERVO_F;
-import static org.firstinspires.ftc.teamcode.BreakoutServo.Direction.SERVO_R;
 
 /**
  * This class is used for the Autonomous segment of the game. No controllers are to be used.
@@ -51,9 +48,9 @@ public class BreakoutAutoOp extends OpMode {
     private boolean run = true;
     private String trackableName = "";
     double i = 0;
-    int goldMineralX = -1;
-    int silverMineral1X = -1;
-    int silverMineral2X = -1;
+    private int goldMineralX = -1;
+    private int silverMineral1X = -1;
+    private int silverMineral2X = -1;
 
     private List<VuforiaTrackable> allTrackables = new ArrayList<>();
     private List<VuforiaTrackable> allTrackables2 = new ArrayList<>();
@@ -187,111 +184,18 @@ public class BreakoutAutoOp extends OpMode {
             }
             allSet(allMotors, 1);
         }
-//        motorLeft.setPower(0);
-//        motorRight.setPower(0);
-//        motorSweeperArm.setPower(0);
-//        motorSweeper.setPower(0);
-//        while (startTime.milliseconds() < 2000) {
-//            motorSweeperArm.setPower(1);
-//        }
-//        motorLeft.setPower(0);
-//        motorRight.setPower(0);
-//        motorSweeperArm.setPower(0);
-//        motorSweeper.setPower(0);
-//        while (startTime.milliseconds() < 2500) {
-//            motorSweeper.setPower(-1);
-//        }
-//        motorLeft.setPower(0);
-//        motorRight.setPower(0);
-//        motorSweeperArm.setPower(0);
-//        motorSweeper.setPower(0);
-//        stop();
     }
 
     private void redFootprint(int goldLoc) {
-        while (startTime.milliseconds() < 1700) {
-            motorLeft.setPower(1);
-            motorRight.setPower(1);
-        }
-        motorLeft.setPower(0);
-        motorRight.setPower(0);
-        motorSweeperArm.setPower(0);
-        motorSweeper.setPower(0);
-        while (startTime.milliseconds() < 2000) {
-            motorSweeperArm.setPower(1);
-        }
-        motorLeft.setPower(0);
-        motorRight.setPower(0);
-        motorSweeperArm.setPower(0);
-        motorSweeper.setPower(0);
-        while (startTime.milliseconds() < 2500) {
-            motorSweeper.setPower(-1);
-        }
-        motorLeft.setPower(0);
-        motorRight.setPower(0);
-        motorSweeperArm.setPower(0);
-        motorSweeper.setPower(0);
-        stop();
+        // TODO write code
     }
 
     private void frontCraters(int goldLoc) {
-        while (startTime.milliseconds() < 1700) {
-            motorLeft.setPower(1);
-            motorRight.setPower(1);
-        }
-        motorLeft.setPower(0);
-        motorRight.setPower(0);
-        motorSweeperArm.setPower(0);
-        motorSweeper.setPower(0);
-        while (startTime.milliseconds() < 2000) {
-            motorSweeperArm.setPower(1);
-        }
-        motorLeft.setPower(0);
-        motorRight.setPower(0);
-        motorSweeperArm.setPower(0);
-        motorSweeper.setPower(0);
-        while (startTime.milliseconds() < 2500) {
-            motorSweeper.setPower(-1);
-        }
-        motorLeft.setPower(0);
-        motorRight.setPower(0);
-        motorSweeperArm.setPower(0);
-        motorSweeper.setPower(0);
-        stop();
+        // TODO write code
     }
 
     private void backSpace(int goldLoc) {
-        while (startTime.milliseconds() < 1700) {
-            motorLeft.setPower(1);
-            motorRight.setPower(1);
-        }
-        motorLeft.setPower(0);
-        motorRight.setPower(0);
-        motorSweeperArm.setPower(0);
-        motorSweeper.setPower(0);
-        while (startTime.milliseconds() < 2000) {
-            motorSweeperArm.setPower(1);
-        }
-        motorLeft.setPower(0);
-        motorRight.setPower(0);
-        motorSweeperArm.setPower(0);
-        motorSweeper.setPower(0);
-        while (startTime.milliseconds() < 2500) {
-            motorSweeper.setPower(-1);
-        }
-        motorLeft.setPower(0);
-        motorRight.setPower(0);
-        motorSweeperArm.setPower(0);
-        motorSweeper.setPower(0);
-        stop();
-    }
-
-    private void sweeperOut() {
-        motorHorizontal.setPower(1);
-    }
-
-    private void sweeperIn() {
-        motorHorizontal.setPower(-1);
+        // TODO write code
     }
 
     private void initTfod(VuforiaLocalizer vuforia) {
@@ -333,7 +237,6 @@ public class BreakoutAutoOp extends OpMode {
 //        targetsRoverRuckus.activate();
         startTime.reset();
 
-        //Broken out motorSweeper class
         motorLeft.set(hardwareMap.dcMotor.get("motorLeft"));
         motorRight.set(hardwareMap.dcMotor.get("motorRight"));
         motorSweeper.set(hardwareMap.dcMotor.get("motorSweeper"));
