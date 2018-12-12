@@ -3,14 +3,10 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.vuforia.Vuforia;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -32,8 +28,8 @@ import static org.firstinspires.ftc.teamcode.BreakoutMotor.Direction.MOTOR_F;
 public class BreakoutAutoOp extends OpMode {
 
     private int goldLoc = -1;
-    private boolean t = true;
-    private boolean c = true;
+    private boolean moveBotOnce = true;
+    private boolean resetTimer = true;
     private static final String TFOD_MODEL_ASSET = "RoverRuckus.tflite";
     private static final String LABEL_GOLD_MINERAL = "Gold Mineral";
     private static final String LABEL_SILVER_MINERAL = "Silver Mineral";
@@ -137,15 +133,15 @@ public class BreakoutAutoOp extends OpMode {
 //    }
 
     private void blueRover(int goldLoc) {
-        if (c) {
+        if (resetTimer) {
             startTime.reset();
-            c = false;
+            resetTimer = false;
         }
         while (startTime.milliseconds() < 1000) {
             motorVertical.setPower(-1);
         }
         motorVertical.setPower(0);
-        if (goldLoc != -1 && t) {
+        if (goldLoc != -1 && moveBotOnce) {
             double time2 = startTime.milliseconds();
             while (startTime.milliseconds() < time2+1500) {
                 if (goldLoc == 0) {
@@ -162,10 +158,10 @@ public class BreakoutAutoOp extends OpMode {
                     telemetry.addData("right", null);
                 }
             }
-            t = false;
+            moveBotOnce = false;
         }
         if (startTime.milliseconds() >= 15000 && goldLoc == -1) {
-            if (t) {
+            if (moveBotOnce) {
                 double time1 = startTime.milliseconds();
                 while (startTime.milliseconds() < 1000+time1) {
                     motorLeft.setPower(1);
@@ -180,7 +176,7 @@ public class BreakoutAutoOp extends OpMode {
                     motorSweeperArm.setPower(0);
                     motorSweeper.setPower(-0.5);
                 }
-                t = false;
+                moveBotOnce = false;
             }
             allSet(allMotors, 1);
         }
@@ -211,16 +207,16 @@ public class BreakoutAutoOp extends OpMode {
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
 //        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
-        VuforiaLocalizer.Parameters parameters2 = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
+        VuforiaLocalizer.Parameters tfParameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
 
 //        parameters.vuforiaLicenseKey = VUFORIA_KEY;
-        parameters2.cameraDirection = CAMERA_CHOICE;
-        parameters2.vuforiaLicenseKey = VUFORIA_KEY;
+        tfParameters.cameraDirection = CAMERA_CHOICE;
+        tfParameters.vuforiaLicenseKey = VUFORIA_KEY;
 //        parameters.cameraName = webcamName;
 
         AppUtil.getInstance().ensureDirectoryExists(captureDirectory);
 //        VuforiaLocalizer vuforia = ClassFactory.getInstance().createVuforia(parameters);
-        VuforiaLocalizer vuforiaTensor = ClassFactory.getInstance().createVuforia(parameters2);
+        VuforiaLocalizer vuforiaTensor = ClassFactory.getInstance().createVuforia(tfParameters);
         vuforiaTensor.enableConvertFrameToBitmap();
 //        VuforiaTrackables targetsRoverRuckus = vuforia.loadTrackablesFromAsset("RoverRuckus");
 //        VuforiaTrackable blueRover = targetsRoverRuckus.get(0);
