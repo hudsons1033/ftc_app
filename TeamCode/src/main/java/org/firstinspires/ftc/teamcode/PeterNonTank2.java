@@ -11,7 +11,7 @@ import static org.firstinspires.ftc.teamcode.BreakoutMotor.Direction.MOTOR_R;
  **/
 @TeleOp(name = "DriveNonTank", group = "Pushbot")
 
-public class PeterNonTank extends OpMode {
+public class PeterNonTank2 extends OpMode {
 
     //Servo Breakout code definition
    /* private BreakoutServo servoA = new BreakoutServo();
@@ -90,12 +90,12 @@ public class PeterNonTank extends OpMode {
         //Gamepad 1
         float leftStick1x = gamepad1.left_stick_x;
         float leftStick1y = gamepad1.left_stick_y;
-        // TODO Peter maybe rename the triggers to what they really are - forwardPower and reversePower
-        float leftTrigger = gamepad1.left_trigger;
-        float rightTrigger = gamepad1.right_trigger;
-        // TODO Peter I would recommend just renaming rightStick1x to leftRightDirectionAndPower
-        // TODO Peter actually, maybe a better name is turningDirectionAndPower
-        float rightStick1x = gamepad1.right_stick_x;
+        // TODO Peter maybe rename the triggers to what they really are - forwardPower and reversePower**
+        float forwardPower = gamepad1.left_trigger;
+        float reversePower = gamepad1.right_trigger;
+        // TODO Peter I would recommend just renaming rightStick1x to leftRightDirectionAndPower**
+        // TODO Peter actually, maybe a better name is turningDirectionAndPower**
+        float turningDirectionAndPower = gamepad1.right_stick_x;
         float rightStick1y = gamepad1.right_stick_y;
         //Gamepad 2
         float leftStick2x = gamepad2.left_stick_x;
@@ -103,32 +103,32 @@ public class PeterNonTank extends OpMode {
         float rightStick2x = gamepad2.right_stick_x;
         float rightStick2y = gamepad2.right_stick_y;
 
-        // TODO Peter since these are just booleans, and you only use them once, and none of the other boolean buttons are put into variables, do you need these?
-        boolean leftBumper = gamepad2.left_bumper;
-        boolean rightBumper = gamepad2.right_bumper;
+        // TODO Peter since these are just booleans, and you only use them once, and none of the other boolean buttons are put into variables, do you need these?**
+        //boolean leftBumper = gamepad2.left_bumper;
+        //boolean rightBumper = gamepad2.right_bumper;
 
         //Move the motors//
-        float leftRightDirectionAndPower = rightStick1x;
+        float leftRightDirectionAndPower = turningDirectionAndPower;
         // TODO Peter maybe rename to turningPower**
         float turningPower = Math.abs(leftRightDirectionAndPower);
         // TODO Peter it would probably be easier to understand if you pulled out the direction - need to make sure it's the right direction...
         boolean turningLeft = leftRightDirectionAndPower <= 0;
-        if (leftTrigger >= rightTrigger) {
-            rightTrigger = 0;
+        if (forwardPower >= reversePower) {
+            reversePower = 0;
         } else {
-            leftTrigger = 0;
+            forwardPower = 0;
         }
         // TODO Peter maybe rename to turningPowerLimit or something like that**
-        float turningPowerLimit = (Range.clip(turningPower, 0, (leftTrigger < rightTrigger) ? rightTrigger : leftTrigger));
+        float turningPowerLimit = (Range.clip(turningPower, 0, (forwardPower < reversePower) ? reversePower : forwardPower));
 
-        if (leftTrigger != 0 && leftRightDirectionAndPower <= 0) {
-            motorRight.setPower(leftTrigger + turningPowerLimit);
-        } else if (leftTrigger != 0) {
-            motorLeft.setPower(leftTrigger + turningPowerLimit);
-        } else if (rightTrigger != 0 && leftRightDirectionAndPower <= 0) {
-            motorRight.setPower(rightTrigger - turningPowerLimit);
+        if (forwardPower != 0 && leftRightDirectionAndPower <= 0) {
+            motorRight.setPower(forwardPower + turningPowerLimit);
+        } else if (forwardPower != 0) {
+            motorLeft.setPower(forwardPower + turningPowerLimit);
+        } else if (reversePower != 0 && leftRightDirectionAndPower <= 0) {
+            motorRight.setPower(reversePower - turningPowerLimit);
         } else {
-            motorLeft.setPower(rightTrigger - turningPowerLimit);
+            motorLeft.setPower(reversePower - turningPowerLimit);
         }
 
 
@@ -164,7 +164,7 @@ public class PeterNonTank extends OpMode {
         //Telemetry
         telemetry.addData("Left Stick X 1", leftStick1x);
         telemetry.addData("Left Stick Y 1", leftStick1y);
-        telemetry.addData("Right Stick X 1", rightStick1x);
+        telemetry.addData("Right Stick X 1", turningDirectionAndPower);
         telemetry.addData("Right Stick Y 1", rightStick1y);
         telemetry.addData("Left Stick X 2", leftStick2x);
         telemetry.addData("Left Stick Y 2", leftStick2y);
