@@ -121,9 +121,9 @@ public class BreakoutDriveOp extends OpMode {
         }
           motorHorizontal1.setPower(horizontalPower);
         if (leftBumper) {
-            motorSweeper.setPower(-0.5);
+            motorSweeper.setPower(-0.25);
         } else if (rightBumper) {
-            motorSweeper.setPower(0.5);
+            motorSweeper.setPower(0.25);
         } else {
             motorSweeper.setPower(0);
         }
