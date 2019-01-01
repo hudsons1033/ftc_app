@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import android.support.annotation.Nullable;
-
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -67,17 +65,6 @@ public class BreakoutLinearAutoOp extends LinearOpMode {
 
     private void stopAllMotors() {
         for (BreakoutMotor motor : allMotors) {
-            motor.setPower(0);
-        }
-    }
-
-    // TODO Mitch could also do something like this...
-    private void stopMotor(@Nullable BreakoutMotor motor) {
-        if (motor == null) {
-            for (BreakoutMotor breakoutMotor : allMotors) {
-                breakoutMotor.setPower(0);
-            }
-        } else {
             motor.setPower(0);
         }
     }
@@ -187,36 +174,38 @@ public class BreakoutLinearAutoOp extends LinearOpMode {
 //            }
 //        }
 
-            // TODO Mitch should this be in the loop?  Or can it just be done while waiting for the start to be pressed, maybe in a loop there?
-            if (tfod != null) {
-                // getUpdatedRecognitions() will return null if no new information is available since
-                // the last time that call was made.
-                List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
-                if (updatedRecognitions != null) {
-                    telemetry.addData("# Object Detected", updatedRecognitions.size());
-                    if (updatedRecognitions.size() == 3) {
-                        for (Recognition recognition : updatedRecognitions) {
-                            telemetry.addData("label", recognition.getLabel());
-                            // TODO Mitch this will need the change for rotating the camera
-                            if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)) {
-                                goldMineralX = (int) recognition.getLeft();
-                            } else if (silverMineral1X == -1) {
-                                silverMineral1X = (int) recognition.getLeft();
-                            } else {
-                                silverMineral2X = (int) recognition.getLeft();
+            startTime.reset();
+            while (startTime.milliseconds() < 15000 && opModeIsActive()) {
+                if (tfod != null) {
+                    // getUpdatedRecognitions() will return null if no new information is available since
+                    // the last time that call was made.
+                    List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+                    if (updatedRecognitions != null) {
+                        telemetry.addData("# Object Detected", updatedRecognitions.size());
+                        if (updatedRecognitions.size() == 3) {
+                            for (Recognition recognition : updatedRecognitions) {
+                                telemetry.addData("label", recognition.getLabel());
+                                if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)) {
+                                    goldMineralX = (int) recognition.getTop();
+                                } else if (silverMineral1X == -1) {
+                                    silverMineral1X = (int) recognition.getTop();
+                                } else {
+                                    silverMineral2X = (int) recognition.getTop();
+                                }
                             }
-                        }
 
-                        if (goldMineralX != -1 && silverMineral1X != -1 && silverMineral2X != -1) {
-                            if (goldMineralX < silverMineral1X && goldMineralX < silverMineral2X) {
-                                telemetry.addData("Gold Mineral Position", "Left");
-                                goldLoc = 0;
-                            } else if (goldMineralX > silverMineral1X && goldMineralX > silverMineral2X) {
-                                telemetry.addData("Gold Mineral Position", "Right");
-                                goldLoc = 2;
-                            } else {
-                                telemetry.addData("Gold Mineral Position", "Center");
-                                goldLoc = 1;
+                            if (goldMineralX != -1 && silverMineral1X != -1 && silverMineral2X != -1) {
+                                if (goldMineralX < silverMineral1X && goldMineralX < silverMineral2X) {
+                                    telemetry.addData("Gold Mineral Position", "Left");
+                                    goldLoc = 0;
+                                } else if (goldMineralX > silverMineral1X && goldMineralX > silverMineral2X) {
+                                    telemetry.addData("Gold Mineral Position", "Right");
+                                    goldLoc = 2;
+                                } else {
+                                    telemetry.addData("Gold Mineral Position", "Center");
+                                    goldLoc = 1;
+                                }
+                                break;
                             }
                         }
                     }
@@ -269,17 +258,15 @@ public class BreakoutLinearAutoOp extends LinearOpMode {
             resetTimer = false;
         }
 
-        // TODO Mitch I think we can replace these whiles/comparisons with just a "sleep"...but will need to test it
-//        while (startTime.milliseconds() < 1000) {
         motorVertical.setPower(-1);
-//        }
-        sleep(1000);
+        sleep(1000); // TODO Mitch test to see if sleep is responsive
+        startTime.reset();
+        while (opModeIsActive() && startTime.milliseconds() < 1000) {
+            idle();
+        }
 
         motorVertical.setPower(0);
         if (goldLoc != -1 && moveBotOnce) {
-            // TODO Mitch need to test
-//            double time2 = startTime.milliseconds();
-//            while (startTime.milliseconds() < time2+1500) {
             if (goldLoc == 0) {
                 motorLeft.setPower(.5);
                 motorRight.setPower(1);
@@ -293,10 +280,13 @@ public class BreakoutLinearAutoOp extends LinearOpMode {
                 motorRight.setPower(.5);
                 telemetry.addData("right", null);
             }
-//            }
-            sleep(2500);
+            startTime.reset();  // TODO Mitch replace with sleep?
+            while (opModeIsActive() && startTime.milliseconds() < 2500) {
+                idle();
+            }
             moveBotOnce = false;
         }
+        // TODO Mitch need to rework this part
         if (startTime.milliseconds() >= 15000 && goldLoc == -1) {
             if (moveBotOnce) {
                 double time1 = startTime.milliseconds();
