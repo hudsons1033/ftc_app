@@ -86,6 +86,9 @@ public class BreakoutLinearAutoOp extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
 
+        telemetry.addLine("runOpMode - initialize Vuforia");
+        telemetry.update();
+
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
 //        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
         VuforiaLocalizer.Parameters tfParameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
@@ -113,6 +116,9 @@ public class BreakoutLinearAutoOp extends LinearOpMode {
 
 //        targetsRoverRuckus.activate();
 
+        telemetry.addLine("runOpMode - get hardware from hardwareMap");
+        telemetry.update();
+
         motorLeft.set(hardwareMap.dcMotor.get("motorLeft"));
         motorRight.set(hardwareMap.dcMotor.get("motorRight"));
         motorSweeper.set(hardwareMap.dcMotor.get("motorSweeper"));
@@ -138,7 +144,7 @@ public class BreakoutLinearAutoOp extends LinearOpMode {
         telemetry.addLine("Calibrating: DO NOT MOVE!");
         telemetry.update();
         gyroA.calibrate();
-        telemetry.clearAll();
+        telemetry.addLine("runOpMode - initialize tfod");
         telemetry.update();
 
         if (ClassFactory.getInstance().canCreateTFObjectDetector()) {
@@ -151,10 +157,16 @@ public class BreakoutLinearAutoOp extends LinearOpMode {
             tfod.activate();
         }
 
+        telemetry.addLine("runOpMode - waiting for start");
+        telemetry.update();
+
         waitForStart();
         startTime.reset();
 
         while (opModeIsActive()) {
+
+            telemetry.addLine("runOpMode - top of loop");
+            telemetry.update();
 
 //        if (!found) {
 //            while (startTime.milliseconds() < 100) {
@@ -182,6 +194,7 @@ public class BreakoutLinearAutoOp extends LinearOpMode {
                     List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
                     if (updatedRecognitions != null) {
                         telemetry.addData("# Object Detected", updatedRecognitions.size());
+                        telemetry.update();
                         if (updatedRecognitions.size() == 3) {
                             for (Recognition recognition : updatedRecognitions) {
                                 telemetry.addData("label", recognition.getLabel());
@@ -287,7 +300,7 @@ public class BreakoutLinearAutoOp extends LinearOpMode {
             moveBotOnce = false;
         }
         // TODO Mitch need to rework this part
-        if (startTime.milliseconds() >= 15000 && goldLoc == -1) {
+        if (goldLoc == -1) {
             if (moveBotOnce) {
                 double time1 = startTime.milliseconds();
                 while (startTime.milliseconds() < 1000 + time1) {
