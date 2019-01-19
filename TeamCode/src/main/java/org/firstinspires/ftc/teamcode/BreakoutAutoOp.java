@@ -137,15 +137,19 @@ public class BreakoutAutoOp extends OpMode {
             startTime.reset();
             resetTimer = false;
         }
-        while (startTime.milliseconds() < 1000) {
+        while (startTime.milliseconds() < 2000) {
             motorVertical.setPower(-1);
         }
         motorVertical.setPower(0);
         if (goldLoc != -1 && moveBotOnce) {
             double time2 = startTime.milliseconds();
-            while (startTime.milliseconds() < time2+1500) {
+            while (startTime.milliseconds() < time2+750) {
+                motorSweeperArm.setPower(1);
+            }
+            motorSweeperArm.setPower(0);
+            while (startTime.milliseconds() < time2+1750) {
                 if (goldLoc == 0) {
-                    motorLeft.setPower(.5);
+                    motorLeft.setPower(.2);
                     motorRight.setPower(1);
                     telemetry.addData("left", null);
                 } else if (goldLoc == 1) {
@@ -154,10 +158,16 @@ public class BreakoutAutoOp extends OpMode {
                     telemetry.addData("middle", null);
                 } else if (goldLoc == 2) {
                     motorLeft.setPower(1);
-                    motorRight.setPower(.5);
+                    motorRight.setPower(.2);
                     telemetry.addData("right", null);
                 }
             }
+            while (startTime.milliseconds() < time2+2750) {
+                motorLeft.setPower(1);
+                motorRight.setPower(1);
+            }
+            motorLeft.setPower(0);
+            motorRight.setPower(0);
             moveBotOnce = false;
         }
         if (startTime.milliseconds() >= 15000 && goldLoc == -1) {
@@ -311,11 +321,11 @@ public class BreakoutAutoOp extends OpMode {
                     for (Recognition recognition : updatedRecognitions) {
                         telemetry.addData("label",recognition.getLabel());
                         if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)) {
-                            goldMineralX = (int) recognition.getLeft();
+                            goldMineralX = (int) recognition.getTop();
                         } else if (silverMineral1X == -1) {
-                            silverMineral1X = (int) recognition.getLeft();
+                            silverMineral1X = (int) recognition.getTop();
                         } else {
-                            silverMineral2X = (int) recognition.getLeft();
+                            silverMineral2X = (int) recognition.getTop();
                         }
                     }
 

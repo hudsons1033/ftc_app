@@ -121,9 +121,9 @@ public class BreakoutDriveOp extends OpMode {
         }
           motorHorizontal1.setPower(horizontalPower);
         if (leftBumper) {
-            motorSweeper.setPower(-0.25);
+            motorSweeper.setPower(-0.5);
         } else if (rightBumper) {
-            motorSweeper.setPower(0.25);
+            motorSweeper.setPower(0.5);
         } else {
             motorSweeper.setPower(0);
         }
@@ -137,8 +137,8 @@ public class BreakoutDriveOp extends OpMode {
         motorVertical.setPower(verticalPower);
 
         //Set the servos
-       // servoA.setPosition(leftStick2y);
-        // servoB.setPosition(rightStick1y);
+//        servoA.setPosition(leftStick2y);
+//         servoB.setPosition(rightStick1y);
 
         //Telemetry
         telemetry.addData("Left Stick X 1", leftStick1x);
@@ -163,7 +163,7 @@ public class BreakoutDriveOp extends OpMode {
         motorLeft.setPower(0);
         motorRight.setPower(0);
         motorSweeper.setPower(0);
-        motorHorizontal1.setPower(0);
+//        motorHorizontal1.setPower(0);
         motorSweeperArm.setPower(0);
 
         //Servo stop
