@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.breakout;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -6,10 +6,10 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  * This class is used to simplify the usage of DC Motors in the code.
  * Please use this class instead of DcMotor.
  */
-class BreakoutMotor {
+public class BreakoutMotor {
 
     //Enum for direction
-    enum Direction {
+    public enum Direction {
         MOTOR_F(DcMotor.Direction.FORWARD),
         MOTOR_R(DcMotor.Direction.REVERSE);
 
@@ -44,4 +44,11 @@ class BreakoutMotor {
         motor.setPower(power);
     }
 
+    public void setMotorMode(DcMotor.RunMode mode) {
+        this.motor.setMode(mode);
+    }
+
+    public void setTargetPosition(int pos) { this.setTargetPosition(pos); }
+
+    public int getCurrentPosition() { return this.getCurrentPosition(); }
 }
