@@ -78,6 +78,21 @@ public class Robot {
         }
     }
 
+    public boolean isBusy(Motor motor) {
+        switch (motor) {
+            case FRONT_LEFT:
+                return frontLeft.isBusy();
+            case FRONT_RIGHT:
+                return frontRight.isBusy();
+            case BACK_LEFT:
+                return backLeft.isBusy();
+            case BACK_RIGHT:
+                return backRight.isBusy();
+            default:
+                return false;
+        }
+    }
+
     public int getCurrentPosition(Motor motor) {
         switch (motor) {
             case FRONT_LEFT:
@@ -105,11 +120,12 @@ public class Robot {
         backRight.set(hardwareMap.dcMotor.get("backRight"));
 
         //Set directions for left and right motors
-        //F: Counter-Clockwise; R: Clockwise while facing motor axle
-        frontLeft.setDirection(MOTOR_F);
-        frontRight.setDirection(MOTOR_R);
-        backLeft.setDirection(MOTOR_F);
-        backRight.setDirection(MOTOR_R);
+        //F = Clockwise while looking at axle
+        //R = Counter clockwise while looking at axle
+        frontLeft.setDirection(MOTOR_R);
+        frontRight.setDirection(MOTOR_F);
+        backLeft.setDirection(MOTOR_R);
+        backRight.setDirection(MOTOR_F);
 
         // Set all motors to zero power
         frontLeft.setPower(0);

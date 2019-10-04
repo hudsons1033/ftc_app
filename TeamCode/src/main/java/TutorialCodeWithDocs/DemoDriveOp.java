@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmodes;
+package TutorialCodeWithDocs;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -10,7 +10,7 @@ import static org.firstinspires.ftc.teamcode.breakout.BreakoutMotor.Direction.MO
 /**
  * This class is used for the main game to drive the robot using the controllers.
  **/
-@TeleOp(name = "Demo", group = "Pushbot")
+//@TeleOp(name = "Demo", group = "Pushbot")
 
 public class DemoDriveOp extends OpMode {
     //Motor objects
@@ -26,7 +26,8 @@ public class DemoDriveOp extends OpMode {
         motorRight.set(hardwareMap.dcMotor.get("motorRight"));
         motorStrafe.set(hardwareMap.dcMotor.get("motorStrafe"));
         //Set directions for left and right motors
-        //F: Counter-Clockwise; R: Clockwise
+        //F = Clockwise while looking at axle
+        //R = Counter clockwise while looking at axle
         motorLeft.setDirection(MOTOR_F);
         motorRight.setDirection(MOTOR_F);
         motorStrafe.setDirection(MOTOR_F);

@@ -25,6 +25,14 @@ public class Matrix {
         }
     }
 
+    public void scalar(float scalar) {
+        float[][] temp = matrix;
+        matrix[0][0] = temp[0][0] * scalar;
+        matrix[0][1] = temp[0][1] * scalar;
+        matrix[1][0] = temp[1][0] * scalar;
+        matrix[1][1] = temp[1][1] * scalar;
+    }
+
     public void setMotorValues(float n, boolean isXArray) {
         if (matrix.length == 2 && matrix[0].length == 2) {
             if (isXArray) {

@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-//@Autonomous(name = "AutoForward", group = "Pushbot")
+//@Auto(name = "AutoForward", group = "Pushbot")
 
 public class AutoForward extends OpMode {
 

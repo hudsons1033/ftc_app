@@ -37,7 +37,7 @@ public class MecanumDriveOp extends OpMode {
     @Override
     public void start() {
         //Motor start
-        drive.setPower(0, 0);
+        drive.setPower(0, 0, 0);
     }
 
     @Override
@@ -60,11 +60,10 @@ public class MecanumDriveOp extends OpMode {
         float rightStick2y = -gamepad2.right_stick_y;
 
         //Move the motors//
-        if (leftTrigger1 > 0 || rightTrigger1 > 0) {
-            drive.setRotationPower(leftTrigger1, rightTrigger1);
-        } else {
-            drive.setPower(rightStick1x, leftStick1y);
-        }
+        float turnPower = rightTrigger1 - leftTrigger1;
+        float[] output = drive.setPower(rightStick1x, leftStick1y, turnPower);
+        String out = Float.toString(output[0]) + " " + Float.toString(output[1]) + " " + Float.toString(output[2]) + " " + Float.toString(output[3]);
+        telemetry.addData("Output", out);
 
         //Telemetry
         telemetry.addData("Left Stick X 1", leftStick1x);
@@ -78,6 +77,6 @@ public class MecanumDriveOp extends OpMode {
     @Override
     public void stop() {
         //Motor stop
-        drive.setPower(0, 0);
+        drive.setPower(0, 0, 0);
     }
 }
