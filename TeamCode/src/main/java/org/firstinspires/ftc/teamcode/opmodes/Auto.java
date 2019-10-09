@@ -19,7 +19,7 @@ import java.util.ArrayList;
 public class Auto extends LinearOpMode {
 
     /* Declare OpMode members. */
-    Robot robot   = new Robot();   // Use a Pushbot's hardware
+    Robot robot = new Robot(telemetry);   // Use a Pushbot's hardware
     FieldObject robotObject;
     Mecanum drive = new Mecanum(robot);
     private ElapsedTime runtime = new ElapsedTime();
@@ -103,6 +103,7 @@ public class Auto extends LinearOpMode {
      */
     public void encoderDrive(Robot robot,
                              FieldObject robotObject, FieldObject destination,
+                             float xOffset, float yOffset, float rotationDegrees,
                              double timeoutS, boolean rotate) {
         int frontLeftTarget;
         int frontRightTarget;
@@ -139,15 +140,16 @@ public class Auto extends LinearOpMode {
         float xInches;
         float yInches;
         if (robotIsAboveDest) {
-            yInches = -(robotBottomRight[1] - destTopRight[1]);
+            yInches = -(robotBottomRight[1] - destTopRight[1]) + yOffset;
         } else {
-            yInches = destBottomRight[1] - robotTopRight[1];
+            yInches = destBottomRight[1] - robotTopRight[1] - yOffset;
         }
         if (robotIsLeftOfDest) {
-            xInches = destBottomLeft[0] - robotBottomRight[0];
+            xInches = destBottomLeft[0] - robotBottomRight[0] + xOffset;
         } else {
-            xInches = -(robotBottomLeft[0] - destBottomRight[0]);
+            xInches = -(robotBottomLeft[0] - destBottomRight[0]) - xOffset;
         }
+        float zInches = (float)(((rotationDegrees*Math.PI)/180)*25.4558);
 
         Matrix xMatrix = new Matrix(2, 2);
         float[] driveX = {1, -1, -1, 1};
@@ -160,6 +162,13 @@ public class Auto extends LinearOpMode {
         yMatrix.scalar(yInches);
         MatrixHandler handler = new MatrixHandler(xMatrix, yMatrix);
         Matrix fin = handler.addMatrices();
+
+        if (rotationDegrees != 0) {
+            Matrix zMatrix = new Matrix(2, 2);
+            float[] driveZ = {1, -1, 1, -1};
+            zMatrix.setValues(driveZ);
+            zMatrix.scalar(zInches);
+        }
 
         // Ensure that the opmode is still active
         if (opModeIsActive()) {

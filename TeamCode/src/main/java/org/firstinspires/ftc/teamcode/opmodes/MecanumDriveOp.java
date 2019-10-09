@@ -19,13 +19,14 @@ import static org.firstinspires.ftc.teamcode.breakout.BreakoutMotor.Direction.MO
 public class MecanumDriveOp extends OpMode {
 
     //Motor objects
-    private Robot robot = new Robot();
+    private Robot robot = new Robot(telemetry);
     private Mecanum drive;
 
     @Override
     public void init() {
         //Set hardwaremaps for left and right motors
         robot.init(hardwareMap);
+        robot.resetAngle();
 
         //Clear telemetry
         telemetry.clearAll();
@@ -60,8 +61,17 @@ public class MecanumDriveOp extends OpMode {
         float rightStick2y = -gamepad2.right_stick_y;
 
         //Move the motors//
-        float turnPower = rightTrigger1 - leftTrigger1;
-        float[] output = drive.setPower(rightStick1x, leftStick1y, turnPower);
+        float[] output = new float[]{0,0,0,0};
+        if (leftStick1y >= 0.1 || leftStick1y <= 0.1 && rightStick1x >= 0.1 || rightStick1x <= 0.1 || rightTrigger1 != 0 || leftTrigger1 != 0) {
+            float turnPower;
+            if (rightTrigger1 != 0 || leftTrigger1 != 0) {
+                turnPower = rightTrigger1 - leftTrigger1;
+                robot.resetAngle();
+            } else {
+                turnPower = (float)robot.checkDirection();
+            }
+            output = drive.setPower(rightStick1x, leftStick1y, turnPower);
+        }
         String out = Float.toString(output[0]) + " " + Float.toString(output[1]) + " " + Float.toString(output[2]) + " " + Float.toString(output[3]);
         telemetry.addData("Output", out);
 
