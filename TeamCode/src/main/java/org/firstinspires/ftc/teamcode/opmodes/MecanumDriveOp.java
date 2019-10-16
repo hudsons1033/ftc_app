@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.opmodes;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.teamcode.breakout.BreakoutMotor;
 import org.firstinspires.ftc.teamcode.breakout.Robot;
@@ -17,6 +18,8 @@ import static org.firstinspires.ftc.teamcode.breakout.BreakoutMotor.Direction.MO
 @TeleOp(name = "Mecanum", group = "Pushbot")
 
 public class MecanumDriveOp extends OpMode {
+
+    private static final String NAME = "Mecanum Drive Op";
 
     //Motor objects
     private Robot robot = new Robot(telemetry);
@@ -61,7 +64,7 @@ public class MecanumDriveOp extends OpMode {
         float rightStick2y = -gamepad2.right_stick_y;
 
         //Move the motors//
-        float[] output = new float[]{0,0,0,0};
+        float[] output;
         if (leftStick1y >= 0.1 || leftStick1y <= 0.1 && rightStick1x >= 0.1 || rightStick1x <= 0.1 || rightTrigger1 != 0 || leftTrigger1 != 0) {
             float turnPower;
             if (rightTrigger1 != 0 || leftTrigger1 != 0) {
@@ -71,17 +74,21 @@ public class MecanumDriveOp extends OpMode {
                 turnPower = (float)robot.checkDirection();
             }
             output = drive.setPower(rightStick1x, leftStick1y, turnPower);
+        } else {
+            output = drive.setPower(0,0,0);
         }
         String out = Float.toString(output[0]) + " " + Float.toString(output[1]) + " " + Float.toString(output[2]) + " " + Float.toString(output[3]);
-        telemetry.addData("Output", out);
+
 
         //Telemetry
+        telemetry.addData("Output", out);
         telemetry.addData("Left Stick X 1", leftStick1x);
         telemetry.addData("Left Stick Y 1", leftStick1y);
         telemetry.addData("Right Stick X 1", rightStick1x);
         telemetry.addData("Right Stick Y 1", rightStick1y);
         telemetry.addData("Left Stick X 2", leftStick2x);
         telemetry.addData("Left Stick Y 2", leftStick2y);
+        RobotLog.i(robot.tag(NAME), "Motor Output " + out);
     }
 
     @Override
