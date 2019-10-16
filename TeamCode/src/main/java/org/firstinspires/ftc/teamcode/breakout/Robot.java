@@ -35,13 +35,15 @@ public class Robot {
     private BreakoutREVGyro gyro = new BreakoutREVGyro();
     private Orientation lastAngles = new Orientation();
     private double globalAngle = 0;
-    private double correction = 0;
-    private double totalError = 0;
+    private double targetAngle = 0;
 
     //Misc
     private HardwareMap hardwareMap;
     private ElapsedTime period = new ElapsedTime();
     private Telemetry telemetry;
+    private double startTime;
+    private double lastTime = -1;
+    double previousError = 0;
 
     /* Constructor */
     public Robot(Telemetry telemetry) {
@@ -150,53 +152,60 @@ public class Robot {
     public void resetAngle() {
         lastAngles = gyro.getOrient(AxesReference.INTRINSIC, AxesOrder.ZXY, AngleUnit.DEGREES);
 
-        globalAngle = 0;
+        targetAngle = lastAngles.firstAngle;
+        telemetry.addData("target", targetAngle);
     }
 
     private double getAngle() {
         Orientation current = getAngularOrientation();
 
-        double deltaAngle = current.firstAngle - lastAngles.firstAngle;
-        telemetry.addData("deltaangle", deltaAngle);
+        double angleDif = targetAngle - current.firstAngle;
+        double invertDirectionAngle = targetAngle - 180;
 
-        if (deltaAngle < -180) {
-            deltaAngle += 360;
-        } else if (deltaAngle > 180) {
-            deltaAngle -= 360;
+        if (angleDif < -180) {
+            angleDif = 360 + angleDif;
         }
-
-        globalAngle += deltaAngle;
+        if (angleDif > 180) {
+            angleDif = -360 + angleDif;
+        }
         lastAngles = current;
         telemetry.addData("lastangles", lastAngles.firstAngle);
+        telemetry.addData("angleDif", angleDif);
 
-        return globalAngle;
+        return angleDif;
     }
 
     public double checkDirection() {
         //TODO: find a good c value
+
+        if (lastTime == -1) {
+            lastTime = startTime - 1;
+        }
+
+        double timeDif = period.milliseconds() - lastTime;
+
         double correction, angle;
-        double Kp = -0.00064;
+
+        //Ku = 3.16
+        double Kp = -0.00128;
         double Ki = 0;
         double Kd = 0;
 
         angle = getAngle();
 
-        if (angle == 0) {
-            correction = 0;
-        } else if (angle < 360 && angle > -360){
-            correction = -angle;
-        } else {
+        if (angle > 360 || angle < -360) {
             resetAngle();
-            correction = 0;
+            angle = 0;
         }
 
-        totalError += angle;
+        double p = Kp * angle;
+        double i = Ki * (angle * timeDif);
+        double d = Kd * (angle - previousError) / timeDif;
 
-        double p = angle * Kp;
-        double i = Ki * totalError;
+        previousError = angle;
 
-        double output = p * angle + i * angle;// + d * angle;
-        correction *= p;
+        correction = p + i + d;
+        telemetry.addData("target", targetAngle);
         telemetry.addData("Correction", correction);
         telemetry.addData("Global Angle", angle);
         return correction;
@@ -208,6 +217,10 @@ public class Robot {
 
     public double getGlobalAngle() {
         return globalAngle;
+    }
+
+    public void start() {
+        this.startTime = period.milliseconds();
     }
 
     /* Initialize standard Hardware interfaces */
