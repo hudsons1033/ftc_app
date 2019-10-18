@@ -150,9 +150,7 @@ public class Robot {
     }
 
     public void resetAngle() {
-        lastAngles = gyro.getOrient(AxesReference.INTRINSIC, AxesOrder.ZXY, AngleUnit.DEGREES);
-
-        targetAngle = lastAngles.firstAngle;
+        targetAngle = gyro.getOrient(AxesReference.INTRINSIC, AxesOrder.ZXY, AngleUnit.DEGREES).firstAngle;
         telemetry.addData("target", targetAngle);
     }
 
@@ -168,7 +166,7 @@ public class Robot {
         if (angleDif > 180) {
             angleDif = -360 + angleDif;
         }
-        lastAngles = current;
+
         telemetry.addData("lastangles", lastAngles.firstAngle);
         telemetry.addData("angleDif", angleDif);
 
@@ -186,10 +184,10 @@ public class Robot {
 
         double correction, angle;
 
-        //Ku = 3.16
+//        double Ku = 3.16;
         double Kp = -0.00128;
         double Ki = 0;
-        double Kd = 0;
+        double Kd = 0.01;
 
         angle = getAngle();
 

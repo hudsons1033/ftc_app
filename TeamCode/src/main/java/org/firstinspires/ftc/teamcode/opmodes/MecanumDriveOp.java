@@ -65,17 +65,19 @@ public class MecanumDriveOp extends OpMode {
 
         //Move the motors//
         float[] output;
-        if (leftStick1y >= 0.1 || leftStick1y <= 0.1 && rightStick1x >= 0.1 || rightStick1x <= 0.1 || rightTrigger1 != 0 || leftTrigger1 != 0) {
+        if (leftStick1y >= 0.1 || leftStick1y <= -0.1 || rightStick1x >= 0.1 || rightStick1x <= -0.1 || rightTrigger1 != 0 || leftTrigger1 != 0) {
             float turnPower;
+            telemetry.addData("sticks moving it", "");
             if (rightTrigger1 != 0 || leftTrigger1 != 0) {
                 turnPower = rightTrigger1 - leftTrigger1;
                 robot.resetAngle();
             } else {
-                turnPower = (float)robot.checkDirection();
+                turnPower = 0;//(float)robot.checkDirection();
             }
             output = drive.setPower(rightStick1x, leftStick1y, turnPower);
         } else {
-            output = drive.setPower(0,0,0);
+            output = drive.setPower(0,0,0);//(float)robot.checkDirection());
+            telemetry.addData("moving itself", "");
         }
         String out = Float.toString(output[0]) + " " + Float.toString(output[1]) + " " + Float.toString(output[2]) + " " + Float.toString(output[3]);
 
