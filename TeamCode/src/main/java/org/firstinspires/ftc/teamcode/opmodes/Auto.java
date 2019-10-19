@@ -21,7 +21,7 @@ public class Auto extends LinearOpMode {
     /* Declare OpMode members. */
     Robot robot = new Robot(telemetry);   // Use a Pushbot's hardware
     FieldObject robotObject;
-    Mecanum drive = new Mecanum(robot);
+    Mecanum drive = new Mecanum(robot, telemetry);
     private ElapsedTime runtime = new ElapsedTime();
     private Field field = new Field();
 

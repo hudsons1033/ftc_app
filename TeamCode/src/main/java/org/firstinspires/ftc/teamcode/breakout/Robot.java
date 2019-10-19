@@ -174,7 +174,6 @@ public class Robot {
     }
 
     public double checkDirection() {
-        //TODO: find a good c value
 
         if (lastTime == -1) {
             lastTime = startTime - 1;
@@ -209,14 +208,6 @@ public class Robot {
         return correction;
     }
 
-    public Orientation getLastAngles() {
-        return lastAngles;
-    }
-
-    public double getGlobalAngle() {
-        return globalAngle;
-    }
-
     public void start() {
         this.startTime = period.milliseconds();
     }
@@ -242,8 +233,8 @@ public class Robot {
 //        wheelIntakeLeft.set(hardwareMap.dcMotor.get("wheelIntakeLeft"));
 //        wheelIntakeRight.set(hardwareMap.dcMotor.get("wheelIntakeRight"));
 
-//        tabLeft.set(hardwareMap.servo.get("tabLeft"));
-//        tabRight.set(hardwareMap.servo.get("tabRight"));
+        tabLeft.set(hardwareMap.servo.get("tabLeft"));
+        tabRight.set(hardwareMap.servo.get("tabRight"));
 
         //Set directions for left and right motors
         //F = Clockwise while looking at axle
@@ -256,8 +247,8 @@ public class Robot {
 //        wheelIntakeLeft.setDirection(MOTOR_F);
 //        wheelIntakeRight.setDirection(MOTOR_R);
 
-//        tabLeft.setDirection(BreakoutServo.Direction.SERVO_F);
-//        tabRight.setDirection(BreakoutServo.Direction.SERVO_R);
+        tabLeft.setDirection(BreakoutServo.Direction.SERVO_F);
+        tabRight.setDirection(BreakoutServo.Direction.SERVO_R);
 
         // Set all motors to zero power
         frontLeft.setPower(0);
@@ -268,8 +259,8 @@ public class Robot {
 //        wheelIntakeLeft.setPower(0);
 //        wheelIntakeRight.setPower(0);
 
-//        tabLeft.setPosition(0);
-//        tabRight.setPosition(0);
+        tabLeft.setPosition(0);
+        tabRight.setPosition(0);
 
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.

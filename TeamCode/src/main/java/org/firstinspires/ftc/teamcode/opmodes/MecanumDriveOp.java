@@ -35,7 +35,7 @@ public class MecanumDriveOp extends OpMode {
         telemetry.clearAll();
 
         //Mecanum drive handler
-        drive = new Mecanum(robot);
+        drive = new Mecanum(robot, telemetry);
     }
 
     @Override
@@ -79,18 +79,22 @@ public class MecanumDriveOp extends OpMode {
             output = drive.setPower(0,0,0);//(float)robot.checkDirection());
             telemetry.addData("moving itself", "");
         }
-        String out = Float.toString(output[0]) + " " + Float.toString(output[1]) + " " + Float.toString(output[2]) + " " + Float.toString(output[3]);
-
 
         //Telemetry
-        telemetry.addData("Output", out);
-        telemetry.addData("Left Stick X 1", leftStick1x);
+        telemetry.addData("FL", output[0]);
+        telemetry.addData("FR", output[1]);
+        telemetry.addData("BL", output[2]);
+        telemetry.addData("BR", output[3]);
+//        telemetry.addData("Left Stick X 1", leftStick1x);
         telemetry.addData("Left Stick Y 1", leftStick1y);
         telemetry.addData("Right Stick X 1", rightStick1x);
-        telemetry.addData("Right Stick Y 1", rightStick1y);
-        telemetry.addData("Left Stick X 2", leftStick2x);
-        telemetry.addData("Left Stick Y 2", leftStick2y);
-        RobotLog.i(robot.tag(NAME), "Motor Output " + out);
+//        telemetry.addData("Right Stick Y 1", rightStick1y);
+//        telemetry.addData("Left Stick X 2", leftStick2x);
+//        telemetry.addData("Left Stick Y 2", leftStick2y);
+        RobotLog.i(robot.tag(NAME), "FL " + output[0]);
+        RobotLog.i(robot.tag(NAME), "FR " + output[1]);
+        RobotLog.i(robot.tag(NAME), "BL " + output[2]);
+        RobotLog.i(robot.tag(NAME), "BR " + output[3]);
     }
 
     @Override
